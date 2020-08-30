@@ -1,0 +1,36 @@
+Format Dates
+moment().format('MMMM Do YYYY, h:mm:ss a'); // июль 29-го 2020, 10:25:41 вечера
+moment().format('dddd');                    // среда
+moment().format("MMM Do YY");               // июль 29-го 20
+moment().format('YYYY [escaped] YYYY');     // 2020 escaped 2020
+moment().format();                          // 2020-07-29T22:25:41+03:00
+Relative Time
+moment("20111031", "YYYYMMDD").fromNow(); // 9 лет назад
+moment("20120620", "YYYYMMDD").fromNow(); // 8 лет назад
+moment().startOf('day').fromNow();        // день назад
+moment().endOf('day').fromNow();          // через 2 часа
+moment().startOf('hour').fromNow();       // 26 минут назад
+Calendar Time
+moment().subtract(10, 'days').calendar(); // 19.07.2020
+moment().subtract(6, 'days').calendar();  // В прошлый четверг, в 22:25
+moment().subtract(3, 'days').calendar();  // В прошлое воскресенье, в 22:25
+moment().subtract(1, 'days').calendar();  // Вчера, в 22:25
+moment().calendar();                      // Сегодня, в 22:25
+moment().add(1, 'days').calendar();       // Завтра, в 22:25
+moment().add(3, 'days').calendar();       // В субботу, в 22:25
+moment().add(10, 'days').calendar();      // 08.08.2020
+Multiple Locale Support
+moment.locale();         // ru
+moment().format('LT');   // 22:25
+moment().format('LTS');  // 22:25:41
+moment().format('L');    // 29.07.2020
+moment().format('l');    // 29.7.2020
+moment().format('LL');   // 29 июля 2020 г.
+moment().format('ll');   // 29 июля 2020 г.
+moment().format('LLL');  // 29 июля 2020 г., 22:25
+moment().format('lll');  // 29 июля 2020 г., 22:25
+moment().format('LLLL'); // среда, 29 июля 2020 г., 22:25
+moment().format('llll');
+
+
+:class="`d-flex justify-${j} mb-6`"
