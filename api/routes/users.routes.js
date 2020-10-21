@@ -10,6 +10,12 @@ router.post(
   ctr.createUser)
 // passport.authenticate('jwt', {session: false}), //для первого юзера закомментировать
 
+// /api/users/admin/delete/:id
+router.delete(
+  '/admin/:id',
+  ctr.removeUser)
+
+
 // /api/users/admin
 router.get(
   '/admin',

@@ -74,6 +74,11 @@ export default {
   ** vuetify module configuration
   ** https://github.com/nuxt-community/vuetify-module
   */
+
+  env: {
+    appName: 'NK_crm'
+  },
+
   vuetify: {
     customVariables: ['~/assets/variables.scss'],
     theme: {

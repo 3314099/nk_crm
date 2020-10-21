@@ -35,6 +35,16 @@ module.exports.createUser = async (req, res) => {
   }
 }
 
+module.exports.removeUser = async (req, res) => {
+  try {
+    await User.deleteOne({ _id: req.params.id })
+    await Note.deleteMany({ userId: req.params.id })
+    res.status(201).json({ message: 'userDeleted' })
+  } catch (e) {
+    res.status(409).json({ message: 'failedDeleteUser' })
+  }
+}
+
 module.exports.createNote = async (req, res) => {
   try {
     // const note = new Note({

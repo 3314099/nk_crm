@@ -1,9 +1,12 @@
 <template>
-  <div>
+  <div class="full_height">
     <div class="d-flex justify-space-between">
-      <div style="width: 400px">
-        <registration />
+      <div class="width">
+        <registration
+          @chgUserNote="chgUserNote"
+        />
         <notes
+          v-if="contentComponent !== 'userRoleForm'"
           :full-notes="fullNotes"
           :user="user"
           @chgUserNote="chgUserNote"
@@ -38,6 +41,17 @@ export default {
     }
   },
   computed: {
+    contentComponent () {
+      let contentComponent = this.$store.getters['mode/contentMode']
+      switch (contentComponent) {
+        case 'userRoleForm':
+          contentComponent = 'userRoleForm'
+          break
+        default:
+          contentComponent = 'usersTable'
+      }
+      return contentComponent
+    },
     fullNotes () {
       let fullNotes = [...this.$store.getters['admin/users/fullNotes']]
       if (this.noteItem) { fullNotes = fullNotes.filter(item => item.userId === this.noteItem) }
@@ -66,10 +80,23 @@ export default {
         this.user = null
       }
     }
-  }
+  },
   // async asyncData ({ store }) {
   //   const users = await store.dispatch('admin/users/fetchUsers')
   //   return { users }
   // }
+  head: {
+    title: 'Пользователи(Admin)'
+  }
 }
 </script>
+
+<style>
+  .full_height {
+    height: 100vh;
+  }
+
+  .width {
+     width: 28vw;
+   }
+</style>

@@ -41,11 +41,14 @@ export const actions = {
       throw err
     }
   },
-  async createUserNote ({ commit, state }, data) {
+  async deleteUser ({ commit, state }, id) {
     try {
-      const response = await this.$axios.$post('/api/users/admin/createNote', data)
-      const newNotes = state.usersNotes.concat(response.note)
-      commit('updateVUsersNotes', newNotes)
+      const response = await this.$axios.$delete(`/api/users/admin/${id}`)
+      const users = state.users.filter(user => user._id !== id)
+      const newNotes = state.fullNotes.filter(note => note.userId !== id)
+      console.log(newNotes)
+      commit('updateVUsers', users)
+      commit('updateFullNotes', newNotes)
       commit('setResponse', response, { root: true })
       return response
     } catch (err) {
@@ -53,6 +56,19 @@ export const actions = {
       throw err
     }
   },
+  async createUserNote ({ commit, state }, data) {
+    try {
+      const response = await this.$axios.$post('/api/users/admin/createNote', data)
+      const newNotes = state.usersNotes.concat(response.note)
+      commit('updateVUsersNotes', newNotes)
+      // commit('setResponse', response, { root: true })
+      return response
+    } catch (err) {
+      commit('setError', err, { root: true })
+      throw err
+    }
+  },
+
   async fetchUserById ({ commit }, id) {
     try {
       return await this.$axios.$get(`/api/users/admin/getUserById/${id}`)

@@ -121,10 +121,9 @@ export default {
           this.y = 'top' // bottom/top
           this.snackbar = true // true/false
           break
-        default: // '' или нет в списке
-          break
+        default: return // '' или нет в списке
       }
-      this.$store.dispatch('snackBar/changeSnackBar', '')
+      if (snackBar) { this.$store.dispatch('snackBar/changeSnackBar') }
     },
     buildAccess (value) {
       switch (value.message) {
@@ -141,6 +140,13 @@ export default {
           //  добавить запись в журнал
           this.color = 'success'
           this.text = 'Пользователь успешно изменен'
+          break
+        case 'userDeleted' :
+          if (value.message) { this.$store.dispatch('chgMessage', value.message) }
+          // загрузить обновленную таблицу пользователей из базы
+          //  добавить запись в журнал
+          this.color = 'success'
+          this.text = 'Пользователь удалён'
           break
         default:
           break

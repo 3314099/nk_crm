@@ -1,139 +1,160 @@
 <template>
-  <div style="width: 400px">
-    <v-card>
-      <v-toolbar
-        :loading="loading"
-        :color="toolBarColor"
-        dark
-        flat
+  <v-card>
+    <v-toolbar
+      :loading="loading"
+      :color="toolBarColor"
+      dark
+      flat
+    >
+      <v-list-item
+        class="pl-0"
+        :two-line="Boolean(editItem)"
       >
-        <v-toolbar-title>
-          {{ toolBarText }}
-        </v-toolbar-title>
+        <v-list-item-content>
+          <v-list-item-title class="title">
+            {{ toolBarText }}
+          </v-list-item-title>
+          <v-list-item-subtitle
+            v-if="mode === 'editUser'"
+          >
+            {{ fullEditUser }}
+          </v-list-item-subtitle>
+        </v-list-item-content>
+      </v-list-item>
+    </v-toolbar>
+    <v-card-text class="pb-0">
+      <v-text-field
+        v-model.trim="lastName"
+        dense
+        label="Введите фамилию"
+        name="lastName"
+        prepend-icon="mdi-account"
+        type="text"
+        :disabled="disabled"
+      />
+      <v-text-field
+        v-model.trim="name"
+        :disabled="disabled"
+        dense
+        :error-messages="nameErrors"
+        label="Введите имя"
+        required
+        name="name"
+        prepend-icon="mdi-account"
+        type="text"
+        @input="$v.name.$touch()"
+        @blur="$v.name.$touch()"
+      />
+
+      <v-text-field
+        v-model.trim="email"
+        :disabled="disabled"
+        dense
+        :error-messages="emailErrors"
+        label="E-mail"
+        required
+        name="email"
+        prepend-icon="mdi-email"
+        type="text"
+        @input="$v.email.$touch"
+        @blur="$v.email.$touch"
+      />
+
+      <v-text-field
+        v-model.trim="password"
+        :disabled="disabled"
+        dense
+        :error-messages="passwordErrors"
+        :append-icon="showPass ? 'mdi-eye' : 'mdi-eye-off'"
+        :label="passLable"
+        required
+        name="password"
+        prepend-icon="mdi-lock"
+        :type="showPass ? 'text' : 'password'"
+        @input="$v.password.$touch"
+        @blur="$v.password.$touch"
+        @click:append="showPass = !showPass"
+      />
+      <div class="d-flex">
+        <v-switch
+          v-if="route === 'admin'"
+          v-model="admin"
+          class="mt-0"
+          label="Администратор"
+          :disabled="disabled"
+        />
         <v-spacer />
-      </v-toolbar>
-      <v-card-text class="pb-0">
-        <v-text-field
-          v-model.trim="lastName"
-          dense
-          label="Введите фамилию"
-          name="lastName"
-          prepend-icon="mdi-account"
-          type="text"
-        />
-        <v-text-field
-          v-model.trim="name"
-          dense
-          :error-messages="nameErrors"
-          label="Введите имя"
-          required
-          name="name"
-          prepend-icon="mdi-account"
-          type="text"
-          @input="$v.name.$touch()"
-          @blur="$v.name.$touch()"
-        />
-
-        <v-text-field
-          v-model.trim="email"
-          dense
-          :error-messages="emailErrors"
-          label="E-mail"
-          required
-          name="email"
-          prepend-icon="mdi-email"
-          type="text"
-          @input="$v.email.$touch"
-          @blur="$v.email.$touch"
-        />
-
-        <v-text-field
-          v-model.trim="password"
-          dense
-          :error-messages="passwordErrors"
-          :append-icon="showPass ? 'mdi-eye' : 'mdi-eye-off'"
-          :label="passLable"
-          required
-          name="password"
-          prepend-icon="mdi-lock"
-          :type="showPass ? 'text' : 'password'"
-          @input="$v.password.$touch"
-          @blur="$v.password.$touch"
-          @click:append="showPass = !showPass"
-        />
-        <div class="d-flex">
-          <v-switch
-            v-if="route === 'admin'"
-            v-model="admin"
-            class="mt-0"
-            label="Администратор"
-          />
-        </div>
-      </v-card-text>
-      <v-card-actions class="pt-0">
-        <template
-          v-if="mode === 'editUser'"
+      </div>
+      <userRoleForm
+        v-if="admin && editMode !== 'deleteUser'"
+      />
+    </v-card-text>
+    <v-card-actions class="pt-0">
+      <template
+        v-if="mode === 'editUser'"
+      >
+        <v-btn
+          color="warning"
+          @click="chgVMode('cancel')"
         >
-          <v-btn
-            color="warning"
-            @click="chgVMode('cancel')"
-          >
-            Отменить
-          </v-btn>
-          <v-spacer />
-          <v-btn
-            icon
-            @click="chgVMode('deleteUser')"
-          >
-            <v-icon>mdi-trash-can-outline</v-icon>
-          </v-btn>
-          <v-spacer />
-          <v-btn
-            color="success"
-            @click="submitHeandler()"
-          >
-            Сохранить
-          </v-btn>
-        </template>
-        <template
-          v-else-if="mode === 'deleteUser'"
+          Отменить
+        </v-btn>
+        <v-spacer />
+        <v-btn
+          icon
+          @click="chgVMode('deleteUser')"
         >
-          <v-btn
-            color="warning"
-            @click="chgVMode('cancelDelete')"
-          >
-            Отменить
-          </v-btn>
-          <v-spacer />
-          <v-btn
-            color="error"
-            @click="submitHeandler()"
-          >
-            Удалить
-          </v-btn>
-        </template>
-        <template
-          v-else
+          <v-icon>mdi-trash-can-outline</v-icon>
+        </v-btn>
+        <v-spacer />
+        <v-btn
+          color="success"
+          @click="submitHeandler()"
         >
-          <v-spacer />
-          <v-btn
-            color="primary"
-            @click="submitHeandler()"
-          >
-            Создать учетную запись
-          </v-btn>
-        </template>
-      </v-card-actions>
-    </v-card>
-  </div>
+          Сохранить
+        </v-btn>
+      </template>
+      <template
+        v-else-if="mode === 'deleteUser'"
+      >
+        <v-btn
+          color="warning"
+          @click="chgVMode('cancelDelete')"
+        >
+          Отменить
+        </v-btn>
+        <v-spacer />
+        <v-btn
+          color="error"
+          @click="submitHeandler('deleteUser')"
+        >
+          Удалить
+        </v-btn>
+      </template>
+      <template
+        v-else
+      >
+        <v-spacer />
+        <v-btn
+          color="primary"
+          @click="submitHeandler('newUser')"
+        >
+          Создать учетную запись
+        </v-btn>
+      </template>
+    </v-card-actions>
+  </v-card>
 </template>
 
 <script>
 import { validationMixin } from 'vuelidate'
 import { email, required, minLength, maxLength } from 'vuelidate/lib/validators'
 import users from '@/mixins/users'
+import userRoleForm from '@/components/admin/userRoleForm'
+
 export default {
   name: 'Registr',
+  components: { userRoleForm },
   mixins: [validationMixin, users],
   validations: {
     name: { required },
@@ -168,9 +189,25 @@ export default {
     toolBarColor: 'primary',
     toolBarText: 'Регистрация нового пользователя',
     passLable: 'Введите пароль',
-    mode: ''
+    mode: '',
+    disabled: false,
+    fullEditUser: ''
   }),
   computed: {
+    contentComponent () {
+      let contentComponent = this.$store.getters['mode/contentMode']
+      switch (contentComponent) {
+        case 'userRoleForm':
+          contentComponent = 'userRoleForm'
+          break
+        default:
+          contentComponent = 'usersTable'
+      }
+      return contentComponent
+    },
+    contentMode () {
+      return this.$store.getters['mode/contentMode']
+    },
     editItem () {
       const editItem = this.$store.getters['mode/editItem']
       if (editItem) {
@@ -194,6 +231,9 @@ export default {
       if (this.email) {
         const users = this.$store.getters['admin/users/users']
         const candidate = users.find(item => item.email === this.email)
+        if (candidate && this.editItem && this.editItem === candidate._id) {
+          return true
+        }
         return !candidate
       } else {
         return true
@@ -239,9 +279,15 @@ export default {
     },
     editMode (v) {
       this.chgMode(v)
+    },
+    admin (v) {
+      v ? this.chgContentMode('userRoleForm') : this.chgContentMode('')
     }
   },
   methods: {
+    chgUserNote () {
+      this.$emit('chgUserNote', null)
+    },
     chgVMode (val) {
       const item = this.$store.getters['mode/editItem']
       switch (val) {
@@ -258,42 +304,69 @@ export default {
     },
     chgMode () {
       const editItem = this.$store.getters['mode/editItem']
-      const editMode = this.$store.getters['mode/editMode']
+      const editMode = this.editMode
+      // const editMode = this.$store.getters['mode/editMode']
+      this.fullEditUser = ''
+      let fullEditUser = this.fullEditUser
       switch (editMode) {
         case 'editUser':
+          this.$v.$reset()
           this.toolBarColor = 'teal'
           this.toolBarText = 'Изменение пользователя'
-          if (editItem.lastName) { this.lastName = editItem.lastName }
-          if (editItem.name) { this.name = editItem.name }
-          if (editItem.email) { this.email = editItem.email }
+          if (editItem.lastName) {
+            this.lastName = editItem.lastName
+            fullEditUser = fullEditUser + ' ' + editItem.lastName
+          }
+          if (editItem.name) {
+            this.name = editItem.name
+            fullEditUser = fullEditUser + ' ' + editItem.name
+          }
+          if (editItem.email) {
+            this.email = editItem.email
+            fullEditUser = fullEditUser + ' (' + editItem.email + ')'
+          }
+          this.fullEditUser = fullEditUser
           this.passLable = 'Введите НОВЫЙ пароль'
           this.password = ''
           editItem.role === 'admin' ? this.admin = true : this.admin = false
           this.mode = editMode
+          this.disabled = false
           break
         case 'deleteUser':
+          this.$v.$reset()
           this.toolBarColor = 'red darken-1'
           this.toolBarText = 'Удаление пользователя'
           this.mode = editMode
+          this.disabled = true
           break
         default:
           this.toolBarColor = 'primary'
           this.toolBarText = 'Регистрация нового пользователя'
-          this.mode = ''
-          this.lastName = ''
-          this.name = ''
-          this.email = ''
-          this.password = ''
-          this.admin = false
+          this.passLable = 'Введите пароль'
+          this.disabled = false
+          this.resetFields()
           break
       }
     },
-    async submitHeandler () {
-      if (this.$v.$invalid) {
-        this.$v.$touch()
-        return
-      }
+    chgContentMode (mode) {
+      this.$store.dispatch('mode/chgContentMode', { contentMode: mode })
+    },
+    async submitHeandler (mode) {
       this.loading = true
+      switch (mode) {
+        case 'newUser' :
+          if (this.$v.$invalid) {
+            this.$v.$touch()
+            return
+          }
+          await this.newUser()
+          break
+        case 'deleteUser':
+          this.deleteUser()
+          break
+      }
+    },
+    async newUser () {
       try {
         const role = this.admin ? 'admin' : 'user'
         const formData = {
@@ -304,19 +377,35 @@ export default {
           role
         }
         await this.$store.dispatch('admin/users/createUser', formData)
-        this.$v.$reset()
-        this.lastName = ''
-        this.name = ''
-        this.email = ''
-        this.password = ''
-        this.admin = false
-        this.loading = false
-        this.mode = ''
+        this.resetFields()
       } catch (err) {
-        console.log(222)
+        // console.log(222)
         // this.loading = false
         // this.$store.dispatch('snackBar/changeSnackBar', 'newUser')
       }
+    },
+    async deleteUser () {
+      const id = this.editItem
+      try {
+        await this.$store.dispatch('admin/users/deleteUser', id)
+        this.$store.dispatch('mode/chgEditMode', { mode: '', item: {} })
+        this.chgUserNote()
+        this.resetFields()
+      } catch (err) {
+        // console.log(222)
+        // this.loading = false
+        // this.$store.dispatch('snackBar/changeSnackBar', 'newUser')
+      }
+    },
+    resetFields () {
+      this.$v.$reset()
+      this.loading = false
+      this.lastName = ''
+      this.name = ''
+      this.email = ''
+      this.password = ''
+      this.admin = false
+      this.mode = ''
     }
   }
 }

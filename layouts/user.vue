@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <div class="">
+    <div>
       <SnackBar />
       <Navbar />
       <Drawer />

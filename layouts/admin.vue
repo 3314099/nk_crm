@@ -24,6 +24,7 @@
           </v-list-item-content>
         </v-list-item>
       </v-list>
+      <storeDebug/>
     </v-navigation-drawer>
     <v-app-bar
       :clipped-left="clipped"
@@ -93,9 +94,10 @@
 
 <script>
 import SnackBar from '@/components/layoutsComponents/SnackBar'
+import storeDebug from '@/storeComponents/storeDebug'
 export default {
   name: 'Admin',
-  components: { SnackBar },
+  components: { SnackBar, storeDebug },
   data () {
     return {
       clipped: true,
@@ -136,8 +138,11 @@ export default {
   },
   computed: {
     errorMessage () {
-      return this.$store.getters.message
+      const mess = this.$store.getters.message
+      return mess || 'Нет ошибок'
     }
   }
 }
 </script>
+
+</style>
