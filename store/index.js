@@ -26,6 +26,9 @@ export const mutations = {
 }
 
 export const actions = {
+  nuxtServerInit ({ dispatch }) {
+    dispatch('auth/autoLogin')
+  },
   setError ({ commit }, payload) {
     commit('setError', payload)
   },

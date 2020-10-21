@@ -14,5 +14,12 @@ module.exports = {
   plugins: [
   ],
   // add your custom rules here
-  rules: {}
+  rules: {
+    semi: 'off',
+    'arrow-parens': 'off',
+    'comma-dangle': 'off',
+    'require-jsdoc': 'off',
+    'new-cap': 'off',
+    'dot-notation': 'off'
+  }
 }

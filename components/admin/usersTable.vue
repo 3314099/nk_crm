@@ -112,11 +112,20 @@
         </v-toolbar>
       </template>
       <template v-slot:item.switch="{ item }">
-        <v-switch
-          class="ml-0 mt-1 mx-4 mb-0 pr-0 mr-0"
-          :input-value="Boolean(item.role === 'admin')"
-          @change="chgRole(item)"
-        />
+        <div class="d-inline-flex column center justify-space-between">
+          <v-switch
+            class="ma-0"
+            :input-value="Boolean(item.role === 'admin')"
+            @change="chgRole(item)"
+          />
+          <v-icon
+            v-if="item.role === 'admin'"
+            class="my-1 pl-3"
+            @click="chgAdminRoles(item._id)"
+          >
+            mdi-cog-outline
+          </v-icon>
+        </div>
       </template>
       <template v-slot:item.actions="{ item }">
         <v-icon

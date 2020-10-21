@@ -8,7 +8,7 @@
     >
       <v-list-item
         class="pl-0"
-        :two-line="Boolean(editItem)"
+        :two-line="Boolean(editItemId)"
       >
         <v-list-item-content>
           <v-list-item-title class="title">
@@ -109,7 +109,7 @@
         <v-spacer />
         <v-btn
           color="success"
-          @click="submitHeandler()"
+          @click="submitHeandler('updateUser')"
         >
           Сохранить
         </v-btn>
@@ -208,7 +208,7 @@ export default {
     contentMode () {
       return this.$store.getters['mode/contentMode']
     },
-    editItem () {
+    editItemId () {
       const editItem = this.$store.getters['mode/editItem']
       if (editItem) {
         return editItem._id
@@ -231,7 +231,7 @@ export default {
       if (this.email) {
         const users = this.$store.getters['admin/users/users']
         const candidate = users.find(item => item.email === this.email)
-        if (candidate && this.editItem && this.editItem === candidate._id) {
+        if (candidate && this.editItemId && this.editItemId === candidate._id) {
           return true
         }
         return !candidate
@@ -274,7 +274,7 @@ export default {
     }
   },
   watch: {
-    editItem (v) {
+    editItemId (v) {
       this.chgMode(v)
     },
     editMode (v) {
@@ -359,14 +359,21 @@ export default {
             this.$v.$touch()
             return
           }
-          await this.newUser()
+          await this.createUser()
           break
         case 'deleteUser':
           this.deleteUser()
           break
+        case 'updateUser' :
+          if (this.$v.$invalid) {
+            this.$v.$touch()
+            return
+          }
+          await this.updateUser()
+          break
       }
     },
-    async newUser () {
+    async createUser () {
       try {
         const role = this.admin ? 'admin' : 'user'
         const formData = {
@@ -377,6 +384,26 @@ export default {
           role
         }
         await this.$store.dispatch('admin/users/createUser', formData)
+        this.$store.dispatch('mode/chgEditMode', { mode: '', item: {} })
+        this.resetFields()
+      } catch (err) {
+        // this.loading = false
+        // this.$store.dispatch('snackBar/changeSnackBar', 'newUser')
+      }
+    },
+    async updateUser () {
+      try {
+        const role = this.admin ? 'admin' : 'user'
+        const formData = {
+          _id: this.editItemId,
+          lastName: this.lastName,
+          name: this.name,
+          email: this.email,
+          password: this.password,
+          role
+        }
+        await this.$store.dispatch('admin/users/updateUser', formData)
+        this.$store.dispatch('mode/chgEditMode', { mode: '', item: {} })
         this.resetFields()
       } catch (err) {
         // console.log(222)

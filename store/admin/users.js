@@ -41,12 +41,24 @@ export const actions = {
       throw err
     }
   },
+  async updateUser ({ commit, state }, user) {
+    try {
+      const response = await this.$axios.$put(`/api/users/admin/${user._id}`, user)
+      const newUsers = state.users.map((item) => {
+        return item._id === user._id ? user : item
+      })
+      commit('updateVUsers', newUsers)
+      commit('setResponse', response, { root: true })
+    } catch (e) {
+      commit('setError', e, { root: true })
+      throw e
+    }
+  },
   async deleteUser ({ commit, state }, id) {
     try {
       const response = await this.$axios.$delete(`/api/users/admin/${id}`)
       const users = state.users.filter(user => user._id !== id)
       const newNotes = state.fullNotes.filter(note => note.userId !== id)
-      console.log(newNotes)
       commit('updateVUsers', users)
       commit('updateFullNotes', newNotes)
       commit('setResponse', response, { root: true })
@@ -81,19 +93,6 @@ export const actions = {
     try {
       const response = await this.$axios.$get('/api/users/admin/getAllUsersNotes')
       commit('updateVUsersNotes', response)
-    } catch (e) {
-      commit('setError', e, { root: true })
-      throw e
-    }
-  },
-  async updateUser ({ commit, state }, user) {
-    try {
-      const response = await this.$axios.$put(`/api/users/admin/${user._id}`, user)
-      const users = state.users.filter((item) => {
-        return item.id === response.user._id ? response.user : item
-      })
-      commit('updateVUsers', users)
-      commit('setResponse', response, { root: true })
     } catch (e) {
       commit('setError', e, { root: true })
       throw e

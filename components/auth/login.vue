@@ -44,7 +44,6 @@
       </v-btn>
       <v-spacer />
       <v-btn
-        text
         type="submit"
         color="primary"
         :loading="loading"

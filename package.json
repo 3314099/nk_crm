@@ -5,7 +5,7 @@
   "author": {
     "name": "Andrey Petrov",
     "email": "3314099@mail.ru",
-    "url":"https://3314099@bitbucket.org/3314099/nk_crm.git"
+    "url": "https://3314099@bitbucket.org/3314099/nk_crm.git"
   },
   "scripts": {
     "dev": "nuxt",
@@ -21,9 +21,12 @@
     "@nuxtjs/moment": "^1.6.1",
     "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
+    "cookie": "^0.4.1",
     "cross-env": "^7.0.2",
     "express": "^4.17.1",
+    "js-cookie": "^2.2.1",
     "jsonwebtoken": "^8.5.1",
+    "jwt-decode": "^3.0.0",
     "mongoose": "^5.9.25",
     "nuxt": "^2.13.0",
     "passport": "^0.4.1",

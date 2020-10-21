@@ -1,22 +1,71 @@
 <template>
   <div class="px-1">
-    <h2 class="purple darken-2 text-center white--text">storeDebug</h2>
+    <h2 class="purple darken-2 text-center white--text">
+      storeDebug
+    </h2>
     <br>
-
-    <h3 class="purple darken-2 text-center white--text">auth:</h3>
-    <h4>isAuthenficated: <span class="subtitle-1">{{ auth.isAuthenficated }}</span></h4>
-
-    <h3 class="purple darken-2 text-center white--text">mode:</h3>
-    <h4>editMode: <span class="subtitle-1">{{ mode.editMode }}</span></h4>
-    <h4>contentMode: <span class="subtitle-1">{{ mode.contentMode }}</span></h4>
-    <h4>editItem: <span class="subtitle-1">{{ mode.editItem }}</span></h4>
-
-    <h3 class="purple darken-2 text-center white--text">index:</h3>
-    <h4>error: <span class="subtitle-1">{{ index.error }}</span></h4>
-    <h4>response: <span class="subtitle-1">{{ index.response }}</span></h4>
-    <h4>buzyEmail: <span class="subtitle-1">{{ index.buzyEmail }}</span></h4>
-    <h4>message: <span class="subtitle-1">{{ index.message }}</span></h4>
-    <h4>messageList: <span class="subtitle-1">{{ index.messageList }}</span></h4>
+    <h3 class="purple darken-2 text-center white--text">
+      auth:
+    </h3>
+    <h4>
+      isAuthenficated:
+      <span class="subtitle-1">
+        {{ auth.isAuthenficated }}
+      </span>
+    </h4>
+    <h3 class="purple darken-2 text-center white--text">
+      mode:
+    </h3>
+    <h4>
+      editMode:
+      <span class="subtitle-1">
+        {{ mode.editMode }}
+      </span>
+    </h4>
+    <h4>
+      contentMode:
+      <span class="subtitle-1">
+        {{ mode.contentMode }}
+      </span>
+    </h4>
+    <h4>
+      editItem:
+      <span class="subtitle-1">
+        {{ mode.editItem }}
+      </span>
+    </h4>
+    <h3 class="purple darken-2 text-center white--text">
+      index:
+    </h3>
+    <h4>
+      error:
+      <span class="subtitle-1">
+        {{ index.error }}
+      </span>
+    </h4>
+    <h4>
+      response:
+      <span class="subtitle-1">{{ index.response }}
+      </span>
+    </h4>
+    <h4>
+      buzyEmail:
+      <span class="subtitle-1">
+        {{ index.buzyEmail }}
+      </span>
+    </h4>
+    <h4>
+      message:
+      <span class="subtitle-1">
+        {{ index.message }}
+      </span>
+    </h4>
+    <h4>
+      messageList:
+      <span class="subtitle-1">
+        {{ index.messageList }}
+      </span>
+    </h4>
     <hr>
   </div>
 </template>

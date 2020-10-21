@@ -1,13 +1,14 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
-// const passport = require('passport')
-// const passportStrategy = require('./middleware/passport-strategy')
+const passport = require('passport')
+const passportStrategy = require('./middleware/passport-strategy')
+
+// const authRoutes = require('./routes/auth.routes')
+// const usersRoutes = require('./routes/users.routes')
 
 const keys = require('./keys')
 const app = express()
-app.use(bodyParser.urlencoded({ extended: true }))
-app.use(bodyParser.json())
 
 mongoose.connect(keys.MONGO_URI, {
   useNewUrlParser: true,
@@ -18,8 +19,10 @@ mongoose.connect(keys.MONGO_URI, {
   .then(() => console.log('MongoDB connected...'))
   .catch(error => console.error(error))
 
-// app.use(passport.initialize()) // TODO блок5, видео 8
+app.use(passport.initialize())
+passport.use(passportStrategy)
 
-// passport.use(passportStrategy)
+app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.json())
 
 module.exports = app

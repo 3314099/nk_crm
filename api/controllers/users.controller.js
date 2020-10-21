@@ -35,6 +35,24 @@ module.exports.createUser = async (req, res) => {
   }
 }
 
+module.exports.update = async (req, res) => {
+  const $set = {
+    lastName: req.body.lastName,
+    name: req.body.name,
+    email: req.body.email,
+    password: req.body.password,
+    role: req.body.role
+  }
+  try {
+    const user = await User.findOneAndUpdate({
+      _id: req.params.id
+    }, { $set }, { overwrite: true })
+    res.json({ message: 'userUdated', user })
+  } catch (e) {
+    res.status(409).json({ message: 'failedUserUpdate' })
+  }
+}
+
 module.exports.removeUser = async (req, res) => {
   try {
     await User.deleteOne({ _id: req.params.id })
@@ -104,24 +122,6 @@ module.exports.getAllUsersNotes = async (req, res) => {
 //     res.status(500).json(e)
 //   }
 // }
-
-module.exports.update = async (req, res) => {
-  const $set = {
-    lastName: req.body.lastName,
-    name: req.body.name,
-    email: req.body.email,
-    password: req.body.password,
-    role: req.body.role
-  }
-  try {
-    const user = await User.findOneAndUpdate({
-      _id: req.params.id
-    }, { $set }, { overwrite: true })
-    res.json({ message: 'userUdated', user })
-  } catch (e) {
-    res.status(409).json({ message: 'failedUserUpdate' })
-  }
-}
 
 module.exports.remove = async (req, res) => {
   try {

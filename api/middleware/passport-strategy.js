@@ -1,5 +1,5 @@
-const {Strategy, ExtractJwt} = require('passport-jwt')
-const {model} = require('mongoose')
+const { Strategy, ExtractJwt } = require('passport-jwt')
+// const { model } = require('mongoose')
 const keys = require('../keys')
 const User = require('../models/user.model')
 
@@ -19,6 +19,6 @@ module.exports = new Strategy(options, async (payload, done) => {
       // done(null, candidate) // заменить для внесения первого юзера
     }
   } catch (e) {
-    console.error(e)
+    // console.error(e)
   }
 })

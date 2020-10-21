@@ -24,7 +24,7 @@
           </v-list-item-content>
         </v-list-item>
       </v-list>
-      <storeDebug/>
+      <storeDebug />
     </v-navigation-drawer>
     <v-app-bar
       :clipped-left="clipped"

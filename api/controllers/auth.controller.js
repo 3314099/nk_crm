@@ -21,7 +21,7 @@ module.exports.login = async (req, res) => {
       }, keys.JWT, { expiresIn: 60 * 60 })
       res.json({ token })
     } else {
-      res.status(401).json({ message: 'Пароль неверен' })
+      res.status(404).json({ message: 'Не удалось войти в систему' })
     }
   } else {
     res.status(404).json({ message: 'Пользователь не найден' })
