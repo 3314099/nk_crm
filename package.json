@@ -7,6 +7,9 @@
     "email": "3314099@mail.ru",
     "url": "https://3314099@bitbucket.org/3314099/nk_crm.git"
   },
+  "engines": {
+    "node": "14.x"
+  },
   "scripts": {
     "dev": "nuxt",
     "build": "nuxt build",
@@ -14,7 +17,8 @@
     "export": "nuxt export",
     "serve": "nuxt serve",
     "lint:js": "eslint --ext .js,.vue --ignore-path .gitignore .",
-    "lint": "npm run lint:js"
+    "lint": "npm run lint:js",
+    "heroku-postbuild": "npm run build"
   },
   "dependencies": {
     "@nuxtjs/axios": "^5.11.0",
