@@ -93,6 +93,9 @@ import isAuthed from '@/middleware/isAuthed'
 
 export default {
   name: 'User',
+  head: {
+    title: 'Система'
+  },
   middleware: [isAuthed],
   layout: 'user'
 }
