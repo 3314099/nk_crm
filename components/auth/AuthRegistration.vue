@@ -51,6 +51,7 @@
       <v-spacer />
       <v-btn
         type="submit"
+        disabled
         color="primary"
         :loading="loading"
         @click="submitHeandler"

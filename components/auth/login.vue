@@ -27,6 +27,7 @@
     </v-card-text>
     <v-card-actions>
       <v-btn
+        disabled
         text
         color="teal"
         @click="chgMode('registration')"
@@ -35,6 +36,7 @@
       </v-btn>
       <v-spacer />
       <v-btn
+        disabled
         text
         small
         color="warning"

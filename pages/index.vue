@@ -3,9 +3,9 @@
     <!-- ///header start/// -->
     <v-toolbar>
       <!-- navigation icon -->
-      <v-app-bar-nav-icon>
-        <img :src="imageLink.logo" alt="Vuetify.js" height="50">
-      </v-app-bar-nav-icon>
+      <!--      <v-app-bar-nav-icon>-->
+      <!--        <img :src="imageLink.logo" alt="Vuetify.js" height="50">-->
+      <!--      </v-app-bar-nav-icon>-->
       <!-- titile, synced text by v-text -->
       <v-toolbar-title class="mx-0" v-text="title" />
       <p>Beta</p>
@@ -14,24 +14,24 @@
       <v-spacer />
       <!-- menu item -->
       <v-toolbar-items>
-        <v-btn
-          @click="snackBar('testButton')"
-        >
-          testSnackBar
-        </v-btn>
-        <v-btn to="/main?message=aaa">
-          message
-        </v-btn>
-        <v-btn to="/admin">
-          Admin
-        </v-btn>
-        <v-btn
-          to="/main"
-          text
-          class="pink lighten-3"
-        >
-          Main
-        </v-btn>
+        <!--        <v-btn-->
+        <!--          @click="snackBar('testButton')"-->
+        <!--        >-->
+        <!--          testSnackBar-->
+        <!--        </v-btn>-->
+        <!--        <v-btn to="/main?message=aaa">-->
+        <!--          message-->
+        <!--        </v-btn>-->
+        <!--        <v-btn to="/admin">-->
+        <!--          Admin-->
+        <!--        </v-btn>-->
+        <!--        <v-btn-->
+        <!--          to="/main"-->
+        <!--          text-->
+        <!--          class="pink lighten-3"-->
+        <!--        >-->
+        <!--          Main-->
+        <!--        </v-btn>-->
       </v-toolbar-items>
     </v-toolbar>
     <!-- ///header end/// -->
@@ -404,6 +404,9 @@ export default {
     snackBar (val) {
       this.$store.dispatch('snackBar/changeSnackBar', val)
     }
-  }
+  },
+  head: {
+    title: 'Главная'
+  },
 }
 </script>
