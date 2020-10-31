@@ -330,15 +330,16 @@
 </template>
 
 <script>
-import SnackBar from '@/components/layoutsComponents/SnackBar'
-import login from '@/components/auth/login'
-import registration from '@/components/auth/AuthRegistration'
+import isGuest from '@/middleware/isGuest'
+
 export default {
+  middleware: [isGuest],
   name: 'Landing',
   components: {
-    SnackBar,
-    login,
-    registration
+    SnackBar: () => import('@/components/layoutsComponents/SnackBar'),
+    login: () => import('@/components//auth/login'),
+    registration: () => import('@/components/auth/AuthRegistration'),
+    forgotPassword: () => import('@/components/auth/forgotPassword')
   },
   data () {
     return {
@@ -392,6 +393,9 @@ export default {
       switch (editMode) {
         case 'registration':
           this.component = 'registration'
+          break
+        case 'forgotPassword':
+          this.component = 'forgotPassword'
           break
         default:
           this.component = 'login'

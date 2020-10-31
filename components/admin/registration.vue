@@ -149,7 +149,7 @@
 <script>
 import { validationMixin } from 'vuelidate'
 import { email, required, minLength, maxLength } from 'vuelidate/lib/validators'
-import users from '@/mixins/users'
+import users from '@/mixins/users.mixin'
 import userRoleForm from '@/components/admin/userRoleForm'
 
 export default {
@@ -208,10 +208,10 @@ export default {
     contentMode () {
       return this.$store.getters['mode/contentMode']
     },
-    editItemId () {
+    editItem () {
       const editItem = this.$store.getters['mode/editItem']
       if (editItem) {
-        return editItem._id
+        return editItem
       } else {
         return ''
       }
@@ -231,7 +231,7 @@ export default {
       if (this.email) {
         const users = this.$store.getters['admin/users/users']
         const candidate = users.find(item => item.email === this.email)
-        if (candidate && this.editItemId && this.editItemId === candidate._id) {
+        if (candidate && this.editItem._id && this.editItem._id === candidate._id) {
           return true
         }
         return !candidate
@@ -369,7 +369,7 @@ export default {
             this.$v.$touch()
             return
           }
-          await this.updateUser()
+          this.updateUser()
           break
       }
     },
@@ -395,11 +395,12 @@ export default {
       try {
         const role = this.admin ? 'admin' : 'user'
         const formData = {
-          _id: this.editItemId,
+          _id: this.editItem._id,
           lastName: this.lastName,
           name: this.name,
           email: this.email,
           password: this.password,
+          usersnotes: this.editItem.usersnotes,
           role
         }
         await this.$store.dispatch('admin/users/updateUser', formData)
@@ -412,9 +413,8 @@ export default {
       }
     },
     async deleteUser () {
-      const id = this.editItem
       try {
-        await this.$store.dispatch('admin/users/deleteUser', id)
+        await this.$store.dispatch('admin/users/deleteUser', this.editItem._id)
         this.$store.dispatch('mode/chgEditMode', { mode: '', item: {} })
         this.chgUserNote()
         this.resetFields()

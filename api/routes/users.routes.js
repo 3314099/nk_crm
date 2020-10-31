@@ -1,5 +1,5 @@
-const passport = require('passport')
 const { Router } = require('express')
+const passport = require('passport')
 // const upload = require('../middleware/upload')
 const ctr = require('../controllers/users.controller')
 const router = Router()
@@ -10,6 +10,7 @@ router.post(
   passport.authenticate('jwt', { session: false }), // для первого юзера закомментировать
   ctr.createUser)
 
+// /api/users/admin/id
 router.put(
   '/admin/:id',
   passport.authenticate('jwt', { session: false }),

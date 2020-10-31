@@ -1,5 +1,27 @@
 <template>
   <div>
+    <v-toolbar
+      color="primary"
+      dark
+      flat
+      shaped
+    >
+      <v-list-item
+        class="pl-0"
+        two-line
+      >
+        <v-list-item-content>
+          <v-list-item-title class="title">
+            Восстановление пароля
+          </v-list-item-title>
+          <v-list-item-subtitle>
+            Введите email, использованный при регистрации
+            <br>
+            и следуйте указаниям в полученном письме.
+          </v-list-item-subtitle>
+        </v-list-item-content>
+      </v-list-item>
+    </v-toolbar>
     <v-card-text>
       <v-text-field
         v-model.trim="email"
@@ -11,18 +33,6 @@
         type="text"
         @input="$v.email.$touch"
         @blur="$v.email.$touch"
-      />
-
-      <v-text-field
-        v-model.trim="password"
-        :error-messages="passwordErrors"
-        label="Password"
-        required
-        name="password"
-        prepend-icon="mdi-lock"
-        type="password"
-        @input="$v.password.$touch"
-        @blur="$v.password.$touch"
       />
     </v-card-text>
     <v-card-actions>
@@ -36,11 +46,10 @@
       <v-spacer />
       <v-btn
         text
-        small
-        color="warning"
-        @click="chgMode('forgotPassword')"
+        color="teal"
+        @click="chgMode('')"
       >
-        забыли пароль
+        Вход
       </v-btn>
       <v-spacer />
       <v-btn
@@ -49,7 +58,7 @@
         :loading="loading"
         @click="submitHeandler"
       >
-        Войти
+        Отправить
       </v-btn>
     </v-card-actions>
   </div>
@@ -59,7 +68,7 @@
 import { validationMixin } from 'vuelidate'
 import { email, required, minLength, maxLength } from 'vuelidate/lib/validators'
 export default {
-  name: 'Login',
+  name: 'forgotPassword',
   mixins: [validationMixin],
   validations: {
     email: { email, required },

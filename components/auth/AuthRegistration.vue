@@ -51,7 +51,6 @@
       <v-spacer />
       <v-btn
         type="submit"
-        disabled
         color="primary"
         :loading="loading"
         @click="submitHeandler"
@@ -166,9 +165,9 @@ export default {
         this.email = ''
         this.password = ''
         this.loading = false
-      } catch (err) {
+        this.$store.dispatch('snackBar/changeSnackBar', 'newUser')
+      } catch (e) {
         this.loading = false
-        // this.$store.dispatch('snackBar/changeSnackBar', 'newUser')
       }
     }
   }

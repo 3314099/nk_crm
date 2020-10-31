@@ -24,14 +24,15 @@
   </div>
 </template>
 <script>
-import utils from '@/mixins/utils'
-import registration from '@/components/admin/registration'
-import usersTable from '@/components/admin/usersTable'
-import notes from '@/components/admin/notes'
+import utils from '@/mixins/utils.mixin'
 export default {
-  layout: 'admin',
+  layout: 'admin.layout',
   transition: 'bounce',
-  components: { registration, usersTable, notes },
+  components: {
+    registration: () => import('@/components/admin/registration'),
+    usersTable: () => import('@/components/admin/usersTable'),
+    notes: () => import('@/components/admin/notes')
+  },
   mixins: [utils],
   data: () => {
     return {
@@ -54,7 +55,7 @@ export default {
     },
     fullNotes () {
       let fullNotes = [...this.$store.getters['admin/users/fullNotes']]
-      if (this.noteItem) { fullNotes = fullNotes.filter(item => item.userId === this.noteItem) }
+      if (this.noteItem) { fullNotes = fullNotes.filter(item => item.recipientId === this.noteItem) }
       return fullNotes
     },
     allNotes () {

@@ -10,15 +10,13 @@ const options = {
 
 module.exports = new Strategy(options, async (payload, done) => {
   try {
-    const candidate = await User.findById(payload.userId).select('id')
-
+    const candidate = await User.findById(payload._id).select('id')
     if (candidate) {
       done(null, candidate)
     } else {
       done(null, false)
-      // done(null, candidate) // заменить для внесения первого юзера
     }
   } catch (e) {
-    // console.error(e)
+    console.error(e)
   }
 })

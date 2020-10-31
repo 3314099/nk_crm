@@ -20,6 +20,6 @@
 <script>
 export default {
   transition: 'bounce',
-  layout: 'admin'
+  layout: 'admin.layout'
 }
 </script>

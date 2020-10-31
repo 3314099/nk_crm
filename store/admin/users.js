@@ -5,6 +5,11 @@ export const state = () => ({
 })
 
 export const mutations = {
+  clear (state) {
+    state.users = []
+    state.usersNotes = []
+    state.fullNotes = []
+  },
   updateVUsers (state, payload) {
     state.users = payload
   },
@@ -17,6 +22,9 @@ export const mutations = {
 }
 
 export const actions = {
+  clear ({ commit }) {
+    commit('clear')
+  },
   chgFullNotes ({ commit }, payload) {
     commit('updateFullNotes', payload)
   },

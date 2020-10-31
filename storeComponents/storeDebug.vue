@@ -1,16 +1,21 @@
 <template>
   <div class="px-1">
-    <h2 class="purple darken-2 text-center white--text">
+    <v-list-item-subtitle class="pa-2">
       storeDebug
-    </h2>
-    <br>
+    </v-list-item-subtitle>
     <h3 class="purple darken-2 text-center white--text">
       auth:
     </h3>
     <h4>
       isAuthenficated:
       <span class="subtitle-1">
-        {{ auth.isAuthenficated }}
+        {{ auth.isAuthenticated }}
+      </span>
+    </h4>
+    <h4>
+      user:
+      <span class="subtitle-1">
+        {{ auth.user }}
       </span>
     </h4>
     <h3 class="purple darken-2 text-center white--text">
@@ -76,7 +81,8 @@ export default {
   computed: {
     auth () {
       const auth = {}
-      auth.isAuthenficated = this.$store.getters['auth/isAuthenficated']
+      auth.isAuthenticated = this.$store.getters['auth/isAuthenticated']
+      auth.user = this.$store.getters['auth/user']
       return auth
     },
     index () {

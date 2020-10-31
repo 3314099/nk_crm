@@ -8,9 +8,12 @@
       fixed
       app
     >
+      <v-list-item-subtitle class="pa-2">
+        Страницы пользователя
+      </v-list-item-subtitle>
       <v-list>
         <v-list-item
-          v-for="(item, i) in items"
+          v-for="(item, i) in userPages"
           :key="i"
           :to="item.to"
           router
@@ -24,6 +27,27 @@
           </v-list-item-content>
         </v-list-item>
       </v-list>
+      <v-divider />
+      <v-list-item-subtitle class="pa-2">
+        Страницы администратора
+      </v-list-item-subtitle>
+      <v-list>
+        <v-list-item
+          v-for="(item, i) in adminPages"
+          :key="i"
+          :to="item.to"
+          router
+          exact
+        >
+          <v-list-item-action>
+            <v-icon>{{ item.icon }}</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title v-text="item.title" />
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+      <v-divider />
       <storeDebug />
     </v-navigation-drawer>
     <v-app-bar
@@ -50,10 +74,42 @@
       >
         <v-icon>mdi-minus</v-icon>
       </v-btn>
-      <v-toolbar-title v-text="title" />
-      <v-spacer />
       ServerError: {{ errorMessage }}
       <v-spacer />
+      <v-toolbar-title v-text="title" />
+      <v-spacer />
+      <v-menu offset-y>
+        <template v-slot:activator="{ on }">
+          <v-btn
+            text
+            class="ma-2"
+            v-on="on"
+          >
+            <v-icon
+              left
+            >
+              mdi-account
+            </v-icon>
+            {{ user.fullname }}
+          </v-btn>
+        </template>
+
+        <v-list>
+          <v-list-item>
+            <v-list-item-title>{{ user.email }}</v-list-item-title>
+          </v-list-item>
+          <v-list-item
+            to="/profile"
+          >
+            <v-list-item-title>Профиль</v-list-item-title>
+          </v-list-item>
+          <v-list-item
+            to="/logout"
+          >
+            <v-list-item-title>Выйти</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
       <v-btn
         icon
         @click.stop="rightDrawer = !rightDrawer"
@@ -84,7 +140,7 @@
       </v-list>
     </v-navigation-drawer>
     <v-footer
-      :absolute="!fixed"
+      :absolute="fixed"
       app
     >
       <span>&copy; {{ new Date().getFullYear() }}</span>
@@ -95,20 +151,30 @@
 <script>
 import SnackBar from '@/components/layoutsComponents/SnackBar'
 import storeDebug from '@/storeComponents/storeDebug'
+import isAdmin from '@/middleware/isAdmin'
+
 export default {
   name: 'Admin',
   components: { SnackBar, storeDebug },
+  middleware: [isAdmin],
   data () {
     return {
       clipped: true,
       drawer: true,
       fixed: true,
-      items: [
+      userPages: [
         {
           icon: 'mdi-apps',
           title: 'Welcome',
           to: '/'
         },
+        {
+          icon: 'mdi-apps',
+          title: 'Панель пользователя',
+          to: '/main'
+        }
+      ],
+      adminPages: [
         {
           icon: 'mdi-chart-bubble',
           title: 'Пользователи',
@@ -133,16 +199,22 @@ export default {
       miniVariant: false,
       right: true,
       rightDrawer: false,
-      title: 'Vuetify.js'
+      title: 'Панель администратора'
     }
   },
   computed: {
     errorMessage () {
       const mess = this.$store.getters.message
       return mess || 'Нет ошибок'
+    },
+    user () {
+      const user = this.$store.getters['auth/user']
+      if (user) {
+        user.fullname = user.name + ' ' + user.lastName
+        return user
+      }
+      return {}
     }
   }
 }
 </script>
-
-</style>

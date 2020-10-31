@@ -6,7 +6,6 @@ const saltRounds = 8
 // const keys = require('../keys')
 const User = require('../models/user.model')
 const Note = require('../models/note.model')
-const Test = require('../models/test.model')
 
 module.exports.getAll = async (req, res) => {
   try {
@@ -36,12 +35,14 @@ module.exports.createUser = async (req, res) => {
 }
 
 module.exports.update = async (req, res) => {
+  const salt = bcrypt.genSaltSync(saltRounds)
   const $set = {
     lastName: req.body.lastName,
     name: req.body.name,
     email: req.body.email,
-    password: req.body.password,
-    role: req.body.role
+    password: bcrypt.hashSync(req.body.password, salt),
+    role: req.body.role,
+    usersnotes: req.body.usersnotes
   }
   try {
     const user = await User.findOneAndUpdate({
@@ -70,11 +71,11 @@ module.exports.createNote = async (req, res) => {
     //   text: req.body.text,
     //   // creatorId: req.body.creatorId,
     // })
-    const { userId, text } = req.body
-    const note = new Note({ userId, text })
+    const { adminId, recipientId, text } = req.body
+    const note = new Note({ adminId, recipientId, text })
     await note.save()
 
-    const user = await User.findById(req.body.userId)
+    const user = await User.findById(req.body.recipientId)
     user.usersnotes.push(note._id)
     await user.save()
 

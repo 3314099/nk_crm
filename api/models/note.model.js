@@ -12,15 +12,16 @@ const noteSchema = new Schema({
     type: Date,
     default: Date.now
   },
-  userId: {
+  adminId: {
+    type: Schema.Types.ObjectId,
+    // required: true,
+    ref: 'users'
+  },
+  recipientId: {
     type: Schema.Types.ObjectId,
     // required: true,
     ref: 'users'
   }
-  // creatorID: {
-  // type: Schema.Types.ObjectId,
-  //   ref: 'users'
-  // }
 })
 
 module.exports = model('usersnotes', noteSchema)

@@ -57,7 +57,7 @@
               class="subtitle-2 text-capitalize text--secondary text--darken-3"
               @click="chgSearchField(note.userEmail)"
             >
-              От: {{ note.userLastName + ' ' + note.userName }}
+              От: {{ note.adminLastName + ' ' + note.adminName }}
             </div>
             <v-spacer />
             <div class="subtitle-2 text-capitalize font-italic text--secondary">
@@ -70,7 +70,7 @@
             class="subtitle-2 text-capitalize text--secondary text--darken-3  pl-1"
             @click="chgSearchField(note.userEmail)"
           >
-            Для: {{ note.userLastName + ' ' + note.userName }}
+            Для: {{ note.recipientLastName + ' ' + note.recipientName }}
           </div>
           <div class="text-capitalize text--darken-3  pl-1">
             <v-icon
@@ -97,8 +97,8 @@
 </template>
 
 <script>
-import utils from '@/mixins/utils'
-import users from '@/mixins/users'
+import utils from '@/mixins/utils.mixin'
+import users from '@/mixins/users.mixin'
 export default {
   name: 'Notes',
   mixins: [utils, users],
@@ -125,11 +125,12 @@ export default {
     },
     async sendNote () {
       if (this.userNotes) {
+        const admin = this.$store.getters['auth/user']
         const noteData = {
-          userId: this.user._id,
+          adminId: admin.id,
+          recipientId: this.user._id,
           // дата присваивается по умолчанию на уровне модели
           text: this.userNotes
-          // creatorId: '111',
         }
         await this.$store.dispatch('admin/users/createUserNote', noteData)
         this.updateNotes()

@@ -18,13 +18,11 @@
   </v-layout>
 </template>
 <script>
-import isAuthed from '@/middleware/isAuthed'
 export default {
   head: {
     title: 'Панель Администратора'
   },
   transition: 'bounce',
-  layout: 'admin',
-  middleware: [isAuthed]
+  layout: 'admin.layout'
 }
 </script>

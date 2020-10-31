@@ -38,8 +38,8 @@ export default {
   ** https://nuxtjs.org/guide/plugins
   */
   plugins: [
-    '@/plugins/globals',
-    '@/plugins/axios'
+    '@/plugins/globals.plugin',
+    '@/plugins/axios.plugin'
   ],
   /*
   ** Auto import components

@@ -18,10 +18,8 @@
   </v-layout>
 </template>
 <script>
-import isAuthed from '@/middleware/isAuthed'
 export default {
   transition: 'bounce',
-  layout: 'user',
-  middleware: [isAuthed]
+  layout: 'user.layout',
 }
 </script>

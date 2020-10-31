@@ -33,7 +33,7 @@ export default {
       color: '',
       mode: '',
       snackbar: false,
-      text: 'Hello, I\'m a snackbar',
+      text: 'Сообщение отсутствует!!!',
       timeout: 6000,
       x: null,
       y: 'top'
@@ -157,13 +157,18 @@ export default {
       switch (value.response.data.message) {
         case 'emailIsBusy' :
           if (value.response.data.email) { this.$store.dispatch('chgBuzyEmail', value.response.data.email) }
-          if (value.response.data.message) {
-            this.$store.dispatch('chgMessage',
-              'Ошибка: Такой Email уже зарегистрирован в системе')
-          }
+          // if (value.response.data.message) {
+          //   this.$store.dispatch('chgMessage',
+          //     'Ошибка: Такой Email уже зарегистрирован в системе')
+          // }
           //  добавить запись в журнал
           this.color = 'error'
           this.text = 'Такой Email уже зарегистрирован в системе'
+          break
+        case 'emailOrPassUncorrect' :
+          //  добавить запись в журнал
+          this.color = 'error'
+          this.text = 'Не удалось войти в систему'
           break
         default:
           break
@@ -194,6 +199,15 @@ export default {
           this.color = 'success'
           this.mode = '' // 'vertical' => mobile
           this.text = 'Не удалось войти в систему' // текст сообщения
+          this.timeout = 2000 // 1000 = 1 сек.
+          this.x = null // left/right/null
+          this.y = 'top' // bottom/top
+          this.snackbar = true // true/false
+          break
+        case 'session':
+          this.color = 'warning'
+          this.mode = '' // 'vertical' => mobile
+          this.text = 'Время сессии истекло' // текст сообщения
           this.timeout = 2000 // 1000 = 1 сек.
           this.x = null // left/right/null
           this.y = 'top' // bottom/top

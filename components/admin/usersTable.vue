@@ -160,8 +160,8 @@
 </template>
 
 <script>
-import utils from '@/mixins/utils'
-import users from '@/mixins/users'
+import utils from '@/mixins/utils.mixin'
+import users from '@/mixins/users.mixin'
 export default {
   name: 'UsersTable',
   mixins: [utils, users],

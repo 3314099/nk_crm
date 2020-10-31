@@ -29,22 +29,17 @@
 </template>
 
 <script>
-import SnackBar from '@/components/layoutsComponents/SnackBar'
-import Navbar from '@/components/layoutsComponents/user/Navbar'
-import Drawer from '@/components/layoutsComponents/user/Drawer'
-import LeftBar from '@/components/layoutsComponents/user/LeftBar'
-import RightBar from '@/components/layoutsComponents/user/RightBar'
-import Navigation from '@/components/layoutsComponents/user/Navigation'
-
+import isAuthed from '@/middleware/isAuthed'
 export default {
+  middleware: [isAuthed],
   name: 'User',
   components: {
-    SnackBar,
-    Navbar,
-    Drawer,
-    LeftBar,
-    RightBar,
-    Navigation
+    SnackBar: () => import('@/components/layoutsComponents/SnackBar'),
+    Navbar: () => import('@/components/layoutsComponents/user/Navbar'),
+    Drawer: () => import('@/components/layoutsComponents/user/Drawer'),
+    LeftBar: () => import('@/components/layoutsComponents/user/LeftBar'),
+    RightBar: () => import('@/components/layoutsComponents/user/RightBar'),
+    Navigation: () => import('@/components/layoutsComponents/user/Navigation')
   },
   computed: {
     barsVisibility () {

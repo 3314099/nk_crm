@@ -58,6 +58,7 @@
         Material design icons
       </v-btn>
       <v-btn
+        v-if="user.role === 'admin'"
         text
         class="ma-2"
         to="/admin"
@@ -87,16 +88,16 @@
       </v-btn>
 
       <v-spacer />
-      <v-menu>
+      <v-menu offset-y>
         <template v-slot:activator="{ on }">
           <v-btn icon v-on="on">
-            <v-icon left>
+            <v-icon>
               mdi-book-open-page-variant
             </v-icon>
           </v-btn>
         </template>
 
-        <v-list left>
+        <v-list>
           <v-list-item
             v-for="(link, i) in links"
             :key="i"
@@ -107,22 +108,28 @@
         </v-list>
       </v-menu>
 
-      <v-menu bottom left>
+      <v-menu offset-y>
         <template v-slot:activator="{ on }">
           <v-btn
+            text
             class="ma-2"
-            dark
-            icon
             v-on="on"
           >
-            User
-            <v-icon>mdi-dots-vertical</v-icon>
+            <v-icon
+              left
+            >
+              mdi-account
+            </v-icon>
+            {{ user.fullname }}
           </v-btn>
         </template>
 
         <v-list>
+          <v-list-item>
+            <v-list-item-title>{{ user.email }}</v-list-item-title>
+          </v-list-item>
           <v-list-item
-            :onclick="profile"
+            to="/profile"
           >
             <v-list-item-title>Профиль</v-list-item-title>
           </v-list-item>
@@ -163,6 +170,16 @@ export default {
       ],
       testBtns: ['MainPagePreloader', 'mainLCR', 'mainLC', 'mainCR', 'mainC'],
       counter: 0
+    }
+  },
+  computed: {
+    user () {
+      const user = this.$store.getters['auth/user']
+      if (user) {
+        user.fullname = user.name + ' ' + user.lastName
+        return user
+      }
+      return {}
     }
   },
   methods: {

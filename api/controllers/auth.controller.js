@@ -9,22 +9,33 @@ const User = require('../models/user.model')
 module.exports.login = async (req, res) => {
   const candidate = await User.findOne({ email: req.body.email })
   if (candidate) {
-    // const isPasswordCorrect = bcrypt.compareSync(req.body.password, candidate.password)
-    const isPasswordCorrect = bcrypt.compare(req.body.password, candidate.password)
+    const isPasswordCorrect = bcrypt.compareSync(req.body.password, candidate.password)
+    // нельзя использовать ассинхронный метод
+    // const isPasswordCorrect = bcrypt.compare(req.body.password, candidate.password)
 
     if (isPasswordCorrect) {
       const token = jwt.sign({
+        lastName: candidate.lastName,
         name: candidate.name,
         email: candidate.email,
         role: candidate.role,
-        userId: candidate._id
-      }, keys.JWT, { expiresIn: 60 * 60 })
+        _id: candidate._id
+      }, keys.JWT, { expiresIn: new Date().getTime() + 60 * 60 })
       res.json({ token })
     } else {
-      res.status(404).json({ message: 'Не удалось войти в систему' })
+      res.status(404).json({ message: 'emailOrPassUncorrect' })
     }
   } else {
-    res.status(404).json({ message: 'Пользователь не найден' })
+    res.status(404).json({ message: 'emailOrPassUncorrect' })
+  }
+}
+
+module.exports.getById = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id)
+    res.json(user)
+  } catch (e) {
+    res.status(500).json({ message: 'failedGetUserById' })
   }
 }
 

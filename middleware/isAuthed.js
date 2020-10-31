@@ -1,6 +1,7 @@
 export default function ({ store, redirect }) {
-  if (!store.getters['auth/isAuthenficated']) {
-    redirect('/')
-    store.dispatch('snackBar/changeSnackBar', 'failLogin')
+  if (!store.getters['auth/isAuthenticated']) {
+    store.commit('admin/users/clear')
+    store.commit('auth/clear')
+    redirect('/error')
   }
 }
