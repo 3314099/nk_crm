@@ -1,104 +1,76 @@
 <template>
-  <v-card
-    max-width="600"
-    class="mx-auto"
-  >
-    <v-toolbar
-      color="light-blue"
-      dark
+  <div>
+    <LBPanelButtons />
+    <v-card
+      max-width="600"
+      class="mx-auto ma-1"
     >
-      <v-app-bar-nav-icon />
-
-      <v-toolbar-title>My files</v-toolbar-title>
-
-      <v-spacer />
-
-      <v-btn icon>
-        <v-icon>mdi-magnify</v-icon>
-      </v-btn>
-
-      <v-btn icon>
-        <v-icon>mdi-view-module</v-icon>
-      </v-btn>
-    </v-toolbar>
-
-    <v-list two-line subheader>
-      <v-subheader inset>
-        Folders
-      </v-subheader>
-
-      <v-list-item
-        v-for="item in items"
-        :key="item.title"
-      >
-        <v-list-item-avatar>
-          <v-icon
-            :class="[item.iconClass]"
-            v-text="item.icon"
-          />
-        </v-list-item-avatar>
-
-        <v-list-item-content>
-          <v-list-item-title v-text="item.title" />
-          <v-list-item-subtitle v-text="item.subtitle" />
-        </v-list-item-content>
-
-        <v-list-item-action>
-          <v-btn icon>
-            <v-icon color="grey lighten-1">
-              mdi-information
-            </v-icon>
-          </v-btn>
-        </v-list-item-action>
-      </v-list-item>
-
-      <v-divider inset />
-
-      <v-subheader inset>
-        Files
-      </v-subheader>
-
-      <v-list-item
-        v-for="item in items2"
-        :key="item.title"
-      >
-        <v-list-item-avatar>
-          <v-icon
-            :class="[item.iconClass]"
-            v-text="item.icon"
-          />
-        </v-list-item-avatar>
-
-        <v-list-item-content>
-          <v-list-item-title v-text="item.title" />
-          <v-list-item-subtitle v-text="item.subtitle" />
-        </v-list-item-content>
-
-        <v-list-item-action>
-          <v-btn icon>
-            <v-icon color="grey lighten-1">
-              mdi-information
-            </v-icon>
-          </v-btn>
-        </v-list-item-action>
-      </v-list-item>
-    </v-list>
-  </v-card>
+      <component :is="component" />
+    </v-card>
+  </div>
 </template>
 
 <script>
 export default {
-  name: 'RightBar',
-  data: () => ({
-    items: [
-      { icon: 'folder', iconClass: 'grey lighten-1 white--text', title: 'Photos', subtitle: 'Jan 9, 2014' },
-      { icon: 'folder', iconClass: 'grey lighten-1 white--text', title: 'Recipes', subtitle: 'Jan 17, 2014' },
-      { icon: 'folder', iconClass: 'grey lighten-1 white--text', title: 'Work', subtitle: 'Jan 28, 2014' }
-    ],
-    items2: [
-      { icon: 'assignment', iconClass: 'blue white--text', title: 'Vacation itinerary', subtitle: 'Jan 20, 2014' },
-      { icon: 'call_to_action', iconClass: 'amber white--text', title: 'Kitchen remodel', subtitle: 'Jan 10, 2014' }
-    ]
-  })
+  name: 'LeftBar',
+  components: {
+    LBPanelButtons: () => import('@/components/LeftBar/LBPanelButtons'),
+    LBcrm: () => import('@/components/testLeftBars/LBcrm'),
+    LBfp: () => import('@/components/testLeftBars/LBfp'),
+    LBtd: () => import('@/components/testLeftBars/LBtd'),
+  },
+  computed: {
+    route () {
+      return this.$route.path
+    },
+    component () {
+      let component = ''
+      switch (this.$route.path) {
+        case '/crm':
+          component = 'LBcrm'
+          break
+        case '/td':
+          component = 'LBtd'
+          break
+        case '/fp':
+          component = 'LBfp'
+          break
+        default:
+          component = 'LBcrm'
+          break
+      }
+      return component
+    }
+  }
 }
 </script>
+<style lang="scss">
+
+  .fade-enter-active, .fade-leave-active {
+    transition: opacity .5s;
+  }
+  .fade-enter, .fade-leave-to /* .fade-leave-active до версии 2.1.8 */ {
+    opacity: 0;
+  }
+
+  .fade-enter-active, .fade-leave-active {
+    transition: all 0.3s;
+  }
+
+  .fade-enter, .fade-leave-active {
+    opacity: 0;
+    transform: scale(0);
+  }
+
+  .slide-fade-enter-active {
+    transition: all .3s ease;
+  }
+  .slide-fade-leave-active {
+    transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+  }
+  .slide-fade-enter, .slide-fade-leave-to
+    /* .slide-fade-leave-active до версии 2.1.8 */ {
+    transform: translateX(10px);
+    opacity: 0;
+  }
+</style>

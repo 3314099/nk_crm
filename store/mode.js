@@ -1,7 +1,8 @@
 export const state = () => ({
   editMode: null,
   editItem: null,
-  contentMode: null
+  contentMode: null,
+  tabMode: null
 })
 
 export const mutations = {

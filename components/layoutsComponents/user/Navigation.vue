@@ -8,7 +8,7 @@
       no-gutters
     >
       <v-col
-        class="grey lighten-2 py-4 text-center white--text"
+        class="grey lighten-2 py-1 text-center white--text"
         cols="12"
       >
         {{ new Date().getFullYear() }} — <strong>Vuetify</strong>
@@ -20,6 +20,7 @@
         text
         rounded
         class="my-2"
+        @click="chgTabMode(link)"
       >
         {{ link }}
       </v-btn>
@@ -32,14 +33,19 @@ export default {
   name: 'Navigation',
   data: () => ({
     links: [
-      'Home',
-      'About Us',
-      'Team',
-      'Services',
-      'Blog',
-      'Contact Us'
+      'Разделы и Группы',
+      'Счета',
+      'Фильтры',
+      'Категории',
+      'Теги',
+      'Участники'
     ]
-  })
+  }),
+  methods: {
+    chgTabMode (item) {
+      alert(item)
+    }
+  }
 }
 </script>
 

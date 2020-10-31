@@ -5,7 +5,7 @@
       <Navbar />
       <Drawer />
     </div>
-    <v-main class="ma-3 main-wrap">
+    <v-main class="mx-2 my-2">
       <div class="d-flex flex-grow-1 justify-space-between">
         <div v-if="barsVisibility" class="justify-start">
           <LeftBar />
