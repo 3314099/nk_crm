@@ -30,6 +30,7 @@
         text
         color="teal"
         @click="chgMode('registration')"
+        disabled
       >
         Регистрация
       </v-btn>
@@ -39,6 +40,7 @@
         small
         color="warning"
         @click="chgMode('forgotPassword')"
+        disabled
       >
         забыли пароль
       </v-btn>
