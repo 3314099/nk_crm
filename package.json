@@ -36,6 +36,7 @@
     "nuxt": "^2.13.0",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
+    "vuedraggable": "^2.24.3",
     "vuelidate": "^0.7.5"
   },
   "devDependencies": {

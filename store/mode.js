@@ -10,9 +10,11 @@ export const mutations = {
     state.editMode = payload.mode
     state.editItem = payload.item
   },
-
   chgContentMode (state, payload) {
     state.contentMode = payload.contentMode
+  },
+  chgTabMode (state, payload) {
+    state.tabMode = payload
   }
 }
 
@@ -22,11 +24,15 @@ export const actions = {
   },
   chgContentMode ({ commit }, payload) {
     commit('chgContentMode', payload)
+  },
+  chgTabMode ({ commit }, payload) {
+    commit('chgTabMode', payload)
   }
 }
 
 export const getters = {
   editMode: state => state.editMode,
   editItem: state => state.editItem,
-  contentMode: state => state.contentMode
+  contentMode: state => state.contentMode,
+  tabMode: state => state.tabMode
 }

@@ -1,30 +1,21 @@
 <template>
-  <v-app>
+  <v-app class="allScreen">
     <div>
       <SnackBar />
       <Navbar />
       <Drawer />
     </div>
-    <v-main class="mx-2 my-2">
-      <div class="d-flex flex-grow-1 justify-space-between">
-        <div v-if="barsVisibility" class="justify-start">
-          <LeftBar />
-        </div>
-        <div style="width: 100%" class="mx-3">
-          <div v-if="barsVisibility">
-            <Navigation />
-          </div>
-          <div class="mt-2">
-            <nuxt />
-          </div>
-        </div>
-        <div v-if="barsVisibility" class="d-flex justify-end">
-          <RightBar />
-        </div>
-      </div>
-    </v-main>
-    {{ barsVisibility }}
-    <v-footer app />
+    <div class="mt-2">
+      <nuxt />
+    </div>
+    <v-footer padless>
+      <v-col
+        class="text-center"
+        cols="12"
+      >
+        {{ new Date().getFullYear() }} — <strong>Vuetify</strong>
+      </v-col>
+    </v-footer>
   </v-app>
 </template>
 
@@ -37,17 +28,20 @@ export default {
     SnackBar: () => import('@/components/layoutsComponents/SnackBar'),
     Navbar: () => import('@/components/layoutsComponents/user/Navbar'),
     Drawer: () => import('@/components/layoutsComponents/user/Drawer'),
-    LeftBar: () => import('@/components/layoutsComponents/user/LeftBar'),
-    RightBar: () => import('@/components/layoutsComponents/user/RightBar'),
-    Navigation: () => import('@/components/layoutsComponents/user/Navigation')
   },
   computed: {
     barsVisibility () {
       return Boolean(this.$route.path !== '/main')
-    }
+    },
+    // topPanel () {
+    //   const topPanel = 'breadСrumbs'
+    //   return topPanel
+    // }
+  },
+  methods: {
   }
 }
 </script>
 
-<style>
+<style scoped>
 </style>
