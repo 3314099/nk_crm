@@ -1,12 +1,6 @@
 <template>
   <div>
     <LBPanelButtons />
-    <v-card
-      max-width="600"
-      class="mx-auto ma-1 overflow-y-auto"
-    >
-      <component :is="LBcomponent" />
-    </v-card>
   </div>
 </template>
 
@@ -15,9 +9,6 @@ export default {
   name: 'LeftBar',
   components: {
     LBPanelButtons: () => import('@/components/LeftBar/LBPanelButtons'),
-    LBcrm: () => import('@/components/testLeftBars/LBcrm'),
-    LBfp: () => import('@/components/testLeftBars/LBfp'),
-    LBtd: () => import('@/components/testLeftBars/LBtd'),
   },
   computed: {
     route () {

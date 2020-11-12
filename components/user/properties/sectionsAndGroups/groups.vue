@@ -1,65 +1,63 @@
 <template>
-  <div>
-    <draggable
-      v-model="list"
-      class="list-group"
-      v-bind="dragOptions"
-      handle=".handle"
-      @start="drag = true"
-      @end="drag = false"
-    >
-      <transition-group>
-        <v-sheet
-          v-for="element in list"
-          :key="element.order"
-          class="ma-1 item"
-          rounded
-          color="teal"
-          transition="scroll-y-transition"
-          aria-hidden="true"
-          @click="element.fixed = !element.fixed"
+  <div class="row">
+    <div class="col-6">
+      <h3>Transition</h3>
+      <div class="group w50">
+        <h2>Текущие вопросы</h2>
+        <draggable
+          v-model="questions"
+          class="question-draggable-list"
+          group="questions"
+          @start="drag = true"
+          @end="drag = false"
         >
-          <v-icon class="handle">
-            mdi-drag-vertical
-          </v-icon>
-          {{ element.name }}
-          <v-btn
-            @click="sss(element.name)"
-          >
-            AAA
-          </v-btn>
-        </v-sheet>
-      </transition-group>
-    </draggable>
-    {{ list }}
+          <div v-for="question in questions" :key="question.index" class="question-draggable">
+            <div class="question-name">
+              {{ question }}
+            </div>
+            <nuxt-link :to="`/question/${question._id}`">
+              Редактировать
+            </nuxt-link>
+          </div>
+        </draggable>
+      </div>
+      <div class="group w50">
+        <h2>Общий список вопросов</h2>
+        <draggable
+          v-model="questionsList"
+          class="question-draggable-list"
+          group="questions"
+          @start="drag = true"
+          @end="drag = false"
+        >
+          <div v-for="question in questionsList" :key="question.index" class="question-draggable">
+            <div class="question-name">
+              {{ question }}
+            </div>
+            <nuxt-link :to="`/question/${question._id}`">
+              Редактировать
+            </nuxt-link>
+          </div>
+        </draggable>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import draggable from 'vuedraggable'
-const message = [
-  'vue.draggable',
-  'draggable',
-  'component',
-  'for',
-  'vue.js 2.0',
-  'based',
-  'on',
-  'Sortablejs'
-]
+
 export default {
   name: 'Groups',
-  display: 'Transition',
-  order: 6,
+  display: 'Transitions',
+  order: 7,
   components: {
     draggable
   },
   data () {
     return {
-      list: message.map((name, index) => {
-        return { name, order: index + 1 };
-      }),
-      drag: false
+      questions: [],
+      questionsList: [111, 222, 333, 444],
     };
   },
   computed: {
@@ -75,9 +73,6 @@ export default {
   methods: {
     sort () {
       this.list = this.list.sort((a, b) => a.order - b.order);
-    },
-    sss (item) {
-      alert(item)
     }
   }
 }
@@ -102,7 +97,7 @@ export default {
   }
 
   .list-group {
-    min-height: 50px;
+    min-height: 20px;
   }
 
   .list-group-item {
@@ -112,15 +107,19 @@ export default {
   .list-group-item i {
     cursor: pointer;
   }
-  .item {
+
+  .question-draggable-list {
+    margin: 16px 0;
+    background-color: #eee;
+    padding: 8px;}
+
+  .question-draggable {
     border-top: 1px solid #ccc;
     border-left: 1px solid #ccc;
     border-right: 1px solid #ccc;
-    padding: 12px 5px;
+    padding: 12px 16px;
     box-sizing: border-box;
     background-color: #fff;
-  }
-  .handle {
     cursor: grab;
   }
 </style>

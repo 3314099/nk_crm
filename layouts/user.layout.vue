@@ -1,5 +1,5 @@
 <template>
-  <v-app class="allScreen">
+  <v-app class="allScreen" style="user-select: none;">
     <div>
       <SnackBar />
       <Navbar />
@@ -21,24 +21,37 @@
 
 <script>
 import isAuthed from '@/middleware/isAuthed'
+import resetStore from '@/mixins/reset-store'
+import getters from '@/mixins/getters'
+
 export default {
-  middleware: [isAuthed],
   name: 'User',
+  middleware: [isAuthed],
   components: {
     SnackBar: () => import('@/components/layoutsComponents/SnackBar'),
     Navbar: () => import('@/components/layoutsComponents/user/Navbar'),
     Drawer: () => import('@/components/layoutsComponents/user/Drawer'),
   },
+  mixins: [getters, resetStore],
   computed: {
     barsVisibility () {
-      return Boolean(this.$route.path !== '/main')
+      return Boolean(this.route !== '/main')
     },
-    // topPanel () {
-    //   const topPanel = 'breadСrumbs'
-    //   return topPanel
-    // }
+    tabModeContent () {
+      return this.gTabMode.content
+    }
   },
-  methods: {
+  watch: {
+    tabModeContent (v) {
+      this.resetUtils()
+      if (this.tabModeContent === 'default') {
+        this.resetFields()
+        this.resetEditMode()
+      }
+    },
+  },
+  created () {
+    this.$store.dispatch('auth/fetchUserData', this.gUser.id)
   }
 }
 </script>

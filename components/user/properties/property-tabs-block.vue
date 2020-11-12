@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="ma-2">
     <v-tabs
       v-model="tabMode"
       background-color="transparent"
@@ -18,15 +18,17 @@
 </template>
 
 <script>
+import resetStore from '@/mixins/reset-store'
 export default {
   name: 'TabPanel',
+  mixins: [resetStore],
   data: () => {
     return {
       tabs: [
         {
           name: 'РАЗДЕЛЫ И ГРУППЫ',
           href: '#sectAndGrp',
-          to: 'propertySectAndGrp'
+          to: 'propertySectAndGrps'
         },
         {
           name: 'СЧЕТА',
@@ -60,7 +62,7 @@ export default {
     tabMode () {
       const vTabMode = this.$store.getters['mode/tabMode']
       let tabMode
-      switch (vTabMode) {
+      switch (vTabMode.tab) {
         case ('propertyAccounts'):
           tabMode = 'accounts'
           break
@@ -85,14 +87,13 @@ export default {
   },
   created () {
     const vTabMode = this.$store.getters['mode/tabMode']
-    if (!vTabMode || !vTabMode.includes('property')) {
-      this.chgTabMode('propertySectAndGrp')
-      // this.$store.dispatch('mode/chgTabMode', 'propertySectAndGrp')
+    if (!vTabMode.tab || !vTabMode.tab.includes('property')) {
+      this.chgTabMode('propertySectAndGrps')
     }
   },
   methods: {
     chgTabMode (mode) {
-      this.$store.dispatch('mode/chgTabMode', mode)
+      this.$store.dispatch('mode/chgTabMode', { tab: mode, content: 'default' })
     }
   }
 }

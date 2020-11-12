@@ -8,7 +8,7 @@
     >
       <v-list-item
         class="pl-0"
-        :two-line="Boolean(editItemId)"
+        :two-line="Boolean(editItem)"
       >
         <v-list-item-content>
           <v-list-item-title class="title">
@@ -274,9 +274,6 @@ export default {
     }
   },
   watch: {
-    editItemId (v) {
-      this.chgMode(v)
-    },
     editMode (v) {
       this.chgMode(v)
     },

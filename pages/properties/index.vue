@@ -2,20 +2,31 @@
   <v-main class="mx-2 my-0">
     <div class="d-flex flex-grow-1 justify-space-between">
       <div class="justify-start">
-        <LeftBar />
+        <LBPanelButtons />
       </div>
       <div style="width: 100%;" class="mx-3">
         <div style="height: 64px;" @click="chTtopPanel()">
           <component :is="topPanel" />
         </div>
-        <v-card>
+      </div>
+      <div class="justify-start">
+        <LBPanelButtons />
+      </div>
+    </div>
+    <div class="d-flex justify-end">
+      <div
+        style="width: 100%;"
+      >
+        <v-card
+          class="pa-2"
+        >
           <lgTabsBlock />
-          <lgMainBlock />
-          <lgSabContentBlock />
+          <lgTabContentBlock />
+          <lgSubContentBlock />
         </v-card>
       </div>
-      <div class="d-flex justify-end">
-        <RightBar />
+      <div>
+        <LBcrm />
       </div>
     </div>
   </v-main>
@@ -26,13 +37,14 @@ export default {
   transition: 'bounce',
   layout: 'user.layout',
   components: {
-    LeftBar: () => import('@/components/LeftBar/LeftBar'),
+    LBPanelButtons: () => import('@/components/LeftBar/LBPanelButtons'),
     breadСrumbs: () => import('@/components/breadСrumbs'),
     messagePanel: () => import('@/components/messagePanel.vue'),
-    lgMainBlock: () => import('@/components/user/lg-main-block'),
+    RightBar: () => import('@/components/LeftBar/RightBar'),
     lgTabsBlock: () => import('@/components/user/lg-tabs-block'),
-    lgSabContentBlock: () => import('@/components/user/lg-sub-content-block'),
-    RightBar: () => import('@/components/LeftBar/RightBar')
+    lgTabContentBlock: () => import('@/components/user/lg-tab-content-block'),
+    lgSubContentBlock: () => import('@/components/user/lg-sub-content-block'),
+    LBcrm: () => import('@/components/testLeftBars/LBcrm')
   },
   data: () => ({
     component: 'sectionsAndGroupsMain',

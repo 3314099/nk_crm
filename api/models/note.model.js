@@ -19,7 +19,6 @@ const noteSchema = new Schema({
   },
   recipientId: {
     type: Schema.Types.ObjectId,
-    // required: true,
     ref: 'users'
   }
 })

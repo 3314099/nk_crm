@@ -75,9 +75,9 @@
       <v-btn
         text
         class="ma-2"
-        to="/main"
+        to="/properties"
       >
-        Main
+        Настройки
       </v-btn>
       <v-btn
         text

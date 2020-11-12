@@ -1,24 +1,24 @@
 <template>
-  <div>
-    <v-row>
+  <div class="my-4">
+    <v-row class="d-flex justify-center">
       <v-col
+        v-if="tabMode.content !== 'TabContentGroupsEdit'"
         cols="12"
-        sm="6"
-        class="py-2"
+        :sm="cols"
       >
         <v-card
-          class="fullScreen"
+          class="fullScreen pa-2"
         >
           <sections />
         </v-card>
       </v-col>
       <v-col
+        v-if="tabMode.content !== 'TabContentSectsEdit'"
         cols="12"
-        sm="6"
-        class="py-2"
+        :sm="cols"
       >
         <v-card
-          height="100%"
+          class="fullScreen pa-2"
         >
           <groups />
         </v-card>
@@ -29,12 +29,22 @@
 </template>
 
 <script>
+import getters from '@/mixins/getters'
 export default {
   name: 'SectionsAndGroupsMain',
   components: {
     sections: () => import('@/components/user/properties/sectionsAndGroups/sections'),
     groups: () => import('@/components/user/properties/sectionsAndGroups/groups')
   },
+  mixins: [getters],
+  computed: {
+    tabMode () {
+      return this.gTabMode
+    },
+    cols () {
+      return this.gTabMode.content === 'default' ? 6 : 9
+    }
+  }
 }
 </script>
 

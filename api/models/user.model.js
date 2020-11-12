@@ -35,6 +35,12 @@ const userSchema = new Schema({
       ref: 'usersnotes',
       default: []
     }
+  ],
+  sections: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'sections'
+    }
   ]
 })
 

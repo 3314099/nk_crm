@@ -44,7 +44,7 @@
             </v-flex>
             <v-flex xs12 md4>
               <v-card
-                to="/fp"
+                to="/fp/targets"
                 class="elevation-0 transparent"
               >
                 <v-card-text class="text-center">
@@ -110,7 +110,7 @@
             </v-flex>
             <v-flex xs12 md4>
               <v-card
-                to="/fp"
+                to="/fp/targets"
                 class="elevation-0 transparent"
               >
                 <v-card-text class="text-center">

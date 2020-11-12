@@ -1,8 +1,12 @@
 export const state = () => ({
-  editMode: null,
-  editItem: null,
+  editMode: 'default',
+  editItem: {},
   contentMode: null,
-  tabMode: null
+  tabMode: {
+    tab: '',
+    content: 'default'
+  },
+  pageMode: '/'
 })
 
 export const mutations = {
@@ -15,6 +19,14 @@ export const mutations = {
   },
   chgTabMode (state, payload) {
     state.tabMode = payload
+  },
+  chgPageMode (state, payload) {
+    state.pageMode = payload
+  },
+  resetMode (state) {
+    state.editMode = 'default'
+    state.editItem = {}
+    state.tabMode = {}
   }
 }
 
@@ -27,6 +39,12 @@ export const actions = {
   },
   chgTabMode ({ commit }, payload) {
     commit('chgTabMode', payload)
+  },
+  chgPageMode ({ commit }, payload) {
+    commit('chgPageMode', payload)
+  },
+  resetMode ({ commit }) {
+    commit('resetMode')
   }
 }
 

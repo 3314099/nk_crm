@@ -1,12 +1,12 @@
 <template>
   <div>
-    <h1>LgMainBlock</h1>
+    tabContent-participants-edit
   </div>
 </template>
 
 <script>
 export default {
-  name: 'LgMainBlock'
+  name: 'TabContentParticipantsEdit'
 }
 </script>
 

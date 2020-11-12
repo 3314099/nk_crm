@@ -152,11 +152,14 @@
 import SnackBar from '@/components/layoutsComponents/SnackBar'
 import storeDebug from '@/storeComponents/storeDebug'
 import isAdmin from '@/middleware/isAdmin'
+import getters from '@/mixins/getters'
+import resetStore from '@/mixins/reset-store'
 
 export default {
   name: 'Admin',
-  components: { SnackBar, storeDebug },
   middleware: [isAdmin],
+  components: { SnackBar, storeDebug },
+  mixins: [getters, resetStore],
   data () {
     return {
       clipped: true,
@@ -208,7 +211,7 @@ export default {
       return mess || 'Нет ошибок'
     },
     user () {
-      const user = this.$store.getters['auth/user']
+      const user = this.gUser
       if (user) {
         user.fullname = user.name + ' ' + user.lastName
         return user

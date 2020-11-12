@@ -28,11 +28,12 @@ export const mutations = {
 }
 
 export const actions = {
-  async login ({ commit, dispatch }, formData) {
+  async login ({ commit, dispatch, state }, formData) {
     try {
       const { token } = await this.$axios.$post('/api/auth/login', formData)
       dispatch('setToken', token)
       commit('setUser', storeUser(token))
+      dispatch('fetchUserData', state.user.id)
     } catch (err) {
       commit('setError', err, { root: true })
       throw err
@@ -65,7 +66,7 @@ export const actions = {
     commit('admin/users/clear', null, { root: true })
     Cookies.remove('jwt-token')
   },
-  autoLogin ({ dispatch, commit }) {
+  autoLogin ({ dispatch, commit, state }) {
     const cookieStr = process.browser
       ? document.cookie
       : this.app.context.req.headers.cookie
@@ -76,6 +77,19 @@ export const actions = {
       commit('setUser', storeUser(token))
     } else {
       dispatch('logout')
+    }
+  },
+  async fetchUserData ({ dispatch, commit }, userId) {
+    try {
+      const data = await this.$axios.$get(`/api/auth/fetchUserData/${userId}`)
+      const sections = data.sections.map((item, index) => {
+        item.order = index + 1
+        return item
+      })
+      commit('user/properties/sections/chgSectionsState', sections, { root: true })
+    } catch (e) {
+      commit('setError', e, { root: true })
+      throw e
     }
   },
 }
