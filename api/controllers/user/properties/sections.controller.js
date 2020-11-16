@@ -1,9 +1,3 @@
-// const bcrypt = require('bcrypt')
-// const saltRounds = 8
-// // const myPlaintextPassword = 's0/\/\P4$$w0rD'
-// // const someOtherPlaintextPassword = 'not_bacon'
-// // const jwt = require('jsonwebtoken')
-// // const keys = require('../keys')
 const Section = require('../../../models/properties/section.model')
 const User = require('../../../models/user.model')
 
@@ -66,6 +60,32 @@ module.exports.remove = async (req, res) => {
   } catch (e) {
     res.status(409).json({ message: 'failedRemoveSection' })
   }
+}
+
+module.exports.chgOrderSections = async (req, res) => {
+  try {
+    await User.findOneAndUpdate(
+      { _id: 222 },
+      { $set: { sections: req.body.data } }
+    )
+    res.status(201).json({ message: 'orderSectionsUpdated' })
+  } catch (e) {
+    res.status(409).json({ message: 'failedChgOrderSections' })
+  }
+  // const user = await User.findById(req.body.userId)
+  // user.sections.update(req.body.data)
+  // await user.save()
+  // try {
+  //   await Section.deleteOne({ _id: req.body.sectionId })
+  //   await User.findOneAndUpdate(
+  //     { _id: req.body.userId },
+  //     { $pullAll: { sections: [req.body.sectionId] } },
+  //     { new: true }
+  //   )
+  //   res.status(201).json({ message: 'sectionRemoved' })
+  // } catch (e) {
+  //   res.status(409).json({ message: 'failedRemoveSection' })
+  // }
 }
 
 // module.exports.update = async (req, res) => {

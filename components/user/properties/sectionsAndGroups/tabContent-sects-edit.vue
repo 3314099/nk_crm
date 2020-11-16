@@ -1,6 +1,5 @@
 <template>
   <div>
-    {{ getEditItem() }}
     <div v-if="resetV === 'fake'" />
     <v-card
       flat

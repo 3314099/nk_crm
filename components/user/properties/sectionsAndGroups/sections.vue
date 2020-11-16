@@ -82,6 +82,7 @@
 
 <script>
 import draggable from 'vuedraggable'
+import sectsAndGroups from '@/mixins/user/properties/sectsAndGroups.mixin'
 export default {
   name: 'Sections',
   display: 'Transition',
@@ -89,6 +90,7 @@ export default {
   components: {
     draggable
   },
+  mixins: [sectsAndGroups],
   data () {
     return {
       drag: false
@@ -101,6 +103,7 @@ export default {
       },
       set (v) {
         this.$store.dispatch('user/properties/sections/chgSectionsState', v)
+        this.MXchgOrderSections(v)
       }
     },
     dragOptions () {

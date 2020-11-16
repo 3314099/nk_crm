@@ -21,4 +21,10 @@ router.post(
   passport.authenticate('jwt', { session: false }),
   ctr.remove)
 
+// POST => /api/user/properties/section/chgOrderSections
+router.post(
+  '/chgOrderSections',
+  passport.authenticate('jwt', { session: false }),
+  ctr.chgOrderSections)
+
 module.exports = router

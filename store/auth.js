@@ -5,7 +5,7 @@ import jwtDecode from 'jwt-decode'
 export const state = () => ({
   token: null,
   emailIsFree: true,
-  user: null
+  user: {}
 })
 
 export const mutations = {

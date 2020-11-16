@@ -75,6 +75,15 @@ export const actions = {
       throw err
     }
   },
+  async chgOrderSections ({ commit }, data) {
+    try {
+      const response = await this.$axios.$post('/api/user/properties/section/chgOrderSections', data)
+      return response
+    } catch (err) {
+      commit('setError', err, { root: true })
+      throw err
+    }
+  },
   chgSectionsState ({ commit, state }, sections) {
     commit('chgSectionsState', sections)
   }

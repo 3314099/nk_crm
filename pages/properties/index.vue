@@ -5,8 +5,8 @@
         <LBPanelButtons />
       </div>
       <div style="width: 100%;" class="mx-3">
-        <div style="height: 64px;" @click="chTtopPanel()">
-          <component :is="topPanel" />
+        <div style="height: 64px;">
+          <infoPanel />
         </div>
       </div>
       <div class="justify-start">
@@ -38,43 +38,11 @@ export default {
   layout: 'user.layout',
   components: {
     LBPanelButtons: () => import('@/components/LeftBar/LBPanelButtons'),
-    breadСrumbs: () => import('@/components/breadСrumbs'),
-    messagePanel: () => import('@/components/messagePanel.vue'),
-    RightBar: () => import('@/components/LeftBar/RightBar'),
+    infoPanel: () => import('@/components/infoPanel/infoPanel'),
     lgTabsBlock: () => import('@/components/user/lg-tabs-block'),
     lgTabContentBlock: () => import('@/components/user/lg-tab-content-block'),
     lgSubContentBlock: () => import('@/components/user/lg-sub-content-block'),
     LBcrm: () => import('@/components/testLeftBars/LBcrm')
   },
-  data: () => ({
-    component: 'sectionsAndGroupsMain',
-    topPanel: 'breadСrumbs',
-    items: [
-      {
-        text: 'Dashboard',
-        disabled: false,
-        href: 'breadcrumbs_dashboard',
-      },
-      {
-        text: 'Link 1',
-        disabled: false,
-        href: 'breadcrumbs_link_1',
-      },
-      {
-        text: 'Link 2',
-        disabled: true,
-        href: 'breadcrumbs_link_2',
-      },
-    ],
-  }),
-  methods: {
-    chTtopPanel () {
-      if (this.topPanel === 'breadСrumbs') {
-        this.topPanel = 'messagePanel'
-      } else {
-        this.topPanel = 'breadСrumbs'
-      }
-    }
-  }
 }
 </script>

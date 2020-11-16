@@ -2,7 +2,6 @@
   <div class="my-4">
     <v-row class="d-flex justify-center">
       <v-col
-        v-if="tabMode.content !== 'TabContentGroupsEdit'"
         cols="12"
         :sm="cols"
       >
@@ -13,7 +12,6 @@
         </v-card>
       </v-col>
       <v-col
-        v-if="tabMode.content !== 'TabContentSectsEdit'"
         cols="12"
         :sm="cols"
       >
@@ -24,7 +22,6 @@
         </v-card>
       </v-col>
     </v-row>
-    <h1>sectionsAndGroups</h1>
   </div>
 </template>
 
@@ -42,7 +39,10 @@ export default {
       return this.gTabMode
     },
     cols () {
-      return this.gTabMode.content === 'default' ? 6 : 9
+      return 6
+      // return this.gTabMode.content === 'default' ? 6 : 9
+      // v-if="tabMode.content !== 'TabContentGroupsEdit'"
+      // v-if="tabMode.content !== 'TabContentSectsEdit'"
     }
   }
 }

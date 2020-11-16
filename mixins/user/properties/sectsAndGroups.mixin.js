@@ -1,13 +1,14 @@
 import utils from '@/mixins/utils.mixin'
+import getters from '@/mixins/getters'
+
 export default {
-  mixins: [utils],
+  mixins: [getters, utils],
   methods: {
     MXsectionsSerial () {
       return this.$store.getters.sectionsSerial || []
     },
     MXsections () {
-      return []
-      // return this.$store.getters.sections || []
+      return this.$store.getters['user/properties/sections/sections'] || []
     },
     MXsectionsSortedBysectionsSerial () {
       return this.MXsections() ? this.UsortFromObjectsArrayByArray(
@@ -70,6 +71,19 @@ export default {
         this.resetUtils()
         this.resetV()
         this.$store.dispatch('snackBar/changeSnackBar', 'sectionRemoved')
+      } catch (e) {
+        this.$store.dispatch('utils/chgLoading', false)
+      }
+    },
+    async MXchgOrderSections (arr) {
+      this.$store.dispatch('utils/chgLoading', true)
+      const data = {
+        userId: this.gUser.id,
+        data: arr.map(item => item._id)
+      }
+      try {
+        await this.$store.dispatch('user/properties/sections/chgOrderSections', data)
+        this.$store.dispatch('utils/chgLoading', false)
       } catch (e) {
         this.$store.dispatch('utils/chgLoading', false)
       }

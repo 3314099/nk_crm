@@ -43,9 +43,6 @@ export default {
     snackBar () {
       return this.$store.getters['snackBar/snackBar']
     },
-    error () {
-      return this.$store.getters.error
-    },
     response () {
       return this.$store.getters.response
     }

@@ -42,26 +42,10 @@ import getters from '@/mixins/getters'
 export default {
   name: 'BreadCrumbs',
   mixins: [getters],
-  data: () => ({
-    items: [
-      {
-        text: 'Главная',
-        disabled: false,
-        href: '/main',
-      },
-      {
-        text: 'Настройки',
-        disabled: true,
-        href: '/properties',
-      },
-      {
-        text: 'Разделы и группы',
-        disabled: true,
-        href: 'breadcrumbs_link_2',
-      },
-    ],
-  }),
   computed: {
+    errorMessage () {
+      return 111
+    },
     loading () {
       return this.$store.getters['utils/loading']
     },
@@ -74,6 +58,13 @@ export default {
     },
   },
   methods: {
+    chTtopPanel () {
+      if (this.topPanel === 'breadСrumbs') {
+        this.topPanel = 'messagePanel'
+      } else {
+        this.topPanel = 'breadСrumbs'
+      }
+    },
     link1 () {
       const link = this.route
       let item = []
