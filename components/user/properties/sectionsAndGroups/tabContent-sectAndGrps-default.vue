@@ -10,7 +10,8 @@
           <h1>Разделы</h1>
         </div>
         <div class="d-flex justify-center">
-          <h1>Разделы</h1>
+          <contentVisibleBtn num-of-btn="first" />
+          <contentSortBtn num-of-btn="first" />
         </div>
       </v-col>
       <v-col
@@ -73,6 +74,10 @@
         <div class="d-flex justify-center">
           <h1>Группы</h1>
         </div>
+        <div class="d-flex justify-center">
+          <contentVisibleBtn num-of-btn="second" />
+          <contentSortBtn num-of-btn="second" />
+        </div>
       </v-col>
     </v-row>
   </div>
@@ -82,6 +87,10 @@
 
 export default {
   name: 'TabContentSectAndGrpsDefault',
+  components: {
+    contentVisibleBtn: () => import('@/components/utils/contentVisibleBtn'),
+    contentSortBtn: () => import('@/components/utils/contentSortBtn')
+  },
   computed: {
     searchField: {
       get () {
@@ -92,7 +101,7 @@ export default {
         v ? searchField = v : searchField = ''
         this.$store.dispatch('utils/chgSearchField', searchField)
       }
-    }
+    },
   },
   methods: {
     chgTabContentMode (mode) {

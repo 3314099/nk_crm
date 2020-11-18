@@ -35,21 +35,20 @@ export const actions = {
       commit('setUser', storeUser(token))
       dispatch('fetchUserData', state.user.id)
     } catch (err) {
-      commit('setError', err, { root: true })
+      dispatch('setAlert', err.response.data.message, { root: true })
       throw err
     }
   },
-  async createUser ({ commit, state }, formData) {
+  async createUser ({ dispatch, commit, state }, formData) {
     try {
       const response = await this.$axios.$post('/api/auth/create', formData)
-      commit('setResponse', response, { root: true })
+      dispatch('setAlert', response.message, { root: true })
       return response
     } catch (err) {
-      commit('setError', err, { root: true })
+      dispatch('chgBuzyEmail', err.response.data.email, { root: true })
+      dispatch('setAlert', err.response.data.message, { root: true })
       throw err
     }
-  },
-  setAdminRoles () {
   },
   setUser ({ commit, user }) {
     commit('setUser', user)
@@ -66,7 +65,7 @@ export const actions = {
     commit('admin/users/clear', null, { root: true })
     Cookies.remove('jwt-token')
   },
-  autoLogin ({ dispatch, commit, state }) {
+  autoLogin ({ dispatch, commit }) {
     const cookieStr = process.browser
       ? document.cookie
       : this.app.context.req.headers.cookie
@@ -82,14 +81,17 @@ export const actions = {
   async fetchUserData ({ dispatch, commit }, userId) {
     try {
       const data = await this.$axios.$get(`/api/auth/fetchUserData/${userId}`)
+      // sections
       const sections = data.sections.map((item, index) => {
         item.order = index + 1
         return item
       })
       commit('user/properties/sections/chgSectionsState', sections, { root: true })
-    } catch (e) {
-      commit('setError', e, { root: true })
-      throw e
+      // logs
+      commit('logs/logs/chgLogsState', data.logs, { root: true })
+    } catch (err) {
+      dispatch('setAlert', err.response.data.message, { root: true })
+      throw err
     }
   },
 }
@@ -112,18 +114,16 @@ function isJWTValid (token) {
 }
 
 function decodeToken (token) {
-  const decodedToken = jwtDecode(token) || {}
-  return decodedToken
+  return jwtDecode(token) || {}
 }
 
 function storeUser (token) {
   const decodedToken = decodeToken(token)
-  const newUser = {
+  return {
     id: decodedToken._id,
     lastName: decodedToken.lastName,
     email: decodedToken.email,
     name: decodedToken.name,
     role: decodedToken.role
   }
-  return newUser
 }

@@ -149,7 +149,7 @@
 </template>
 
 <script>
-import SnackBar from '@/components/layoutsComponents/SnackBar'
+import SnackBar from '@/components/infoPanel/SnackBar'
 import storeDebug from '@/storeComponents/storeDebug'
 import isAdmin from '@/middleware/isAdmin'
 import getters from '@/mixins/getters'

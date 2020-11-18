@@ -1,6 +1,8 @@
 <template>
   <v-app class="allScreen" style="user-select: none;">
     <div>
+      <historyModal />
+      <logsModal />
       <SnackBar />
       <Navbar />
       <Drawer />
@@ -28,7 +30,9 @@ export default {
   name: 'User',
   middleware: [isAuthed],
   components: {
-    SnackBar: () => import('@/components/layoutsComponents/SnackBar'),
+    SnackBar: () => import('@/components/infoPanel/SnackBar'),
+    historyModal: () => import('@/components/infoPanel/historyModal'),
+    logsModal: () => import('@/components/infoPanel/logs'),
     Navbar: () => import('@/components/layoutsComponents/user/Navbar'),
     Drawer: () => import('@/components/layoutsComponents/user/Drawer'),
   },
@@ -42,7 +46,7 @@ export default {
     }
   },
   watch: {
-    tabModeContent (v) {
+    tabModeContent () {
       this.resetUtils()
       if (this.tabModeContent === 'default') {
         this.resetFields()

@@ -4,9 +4,6 @@ const mongoose = require('mongoose')
 const passport = require('passport')
 const passportStrategy = require('./middleware/passport-strategy')
 
-// const authRoutes = require('./routes/auth.routes')
-// const usersRoutes = require('./routes/users.routes')
-
 const keys = require('./keys')
 const app = express()
 
@@ -16,7 +13,9 @@ mongoose.connect(keys.MONGO_URI, {
   useCreateIndex: true,
   useFindAndModify: false
 })
+  // eslint-disable-next-line no-console
   .then(() => console.log('MongoDB connected...'))
+  // eslint-disable-next-line no-console
   .catch(error => console.error(error))
 
 app.use(passport.initialize())

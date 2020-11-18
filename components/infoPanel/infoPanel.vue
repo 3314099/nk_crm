@@ -5,50 +5,55 @@
       vertical
     >
       <v-window-item>
-        <breadСrumbs />
+        <breadCrumbs />
       </v-window-item>
       <v-window-item
-        @click="showError"
+        @click="errorPanel('close')"
       >
-        <messagePanel />
+        <errorPanel />
       </v-window-item>
     </v-window>
   </div>
 </template>
 
 <script>
+import alertList from '@/mixins/user/alertsLists/alertList'
 export default {
-  name: 'InfoPanel',
+  name: 'ErrorPanel',
   components: {
-    breadСrumbs: () => import('@/components/infoPanel/breadСrumbs'),
-    messagePanel: () => import('@/components/infoPanel/messagePanel')
+    breadCrumbs: () => import('@/components/infoPanel/breadСrumbs'),
+    errorPanel: () => import('@/components/infoPanel/errorPanel')
   },
+  mixins: [alertList],
   data: () => ({
     onboarding: 0,
   }),
   computed: {
-    error () {
-      return this.$store.getters.error
+    alert () {
+      return this.$store.getters.alertMessage
     }
   },
   watch: {
-    error (value) {
-      if (value) {
-        this.showError()
+    alert (message) {
+      if (message) {
+        this.errorPanel(message)
       }
     }
   },
   methods: {
-    showError () {
-      if (this.onboarding === 0) {
-        this.onboarding = 1
-        setTimeout(() => {
-          this.onboarding = 0
-          this.$store.commit('setError', '', { root: true })
-        }, 10000)
-      } else {
+    errorPanel (message) {
+      if (message === 'close') {
         this.onboarding = 0
-        this.$store.commit('setError', '', { root: true })
+        this.$store.commit('setAlert', '', { root: true })
+      } else {
+        const alertMessage = this.alertList.find(item => item.message === message)
+        if (alertMessage.alertType === 'errorPanel') {
+          this.onboarding = 1
+          setTimeout(() => {
+            this.onboarding = 0
+            this.$store.commit('setAlert', '', { root: true })
+          }, 10000)
+        }
       }
     }
   },

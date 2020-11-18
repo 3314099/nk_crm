@@ -307,7 +307,7 @@
       <v-container>
         <v-layout column align-center justify-center>
           <v-flex xs12 class="text-xs-center">
-            <img height="200px" :src="imageLink.logo">
+            <img height="200px" :src="imageLink.logo" alt="image link">
           </v-flex>
         </v-layout>
       </v-container>
@@ -336,7 +336,7 @@ export default {
   middleware: [isGuest],
   name: 'Landing',
   components: {
-    SnackBar: () => import('@/components/layoutsComponents/SnackBar'),
+    SnackBar: () => import('@/components/infoPanel/SnackBar'),
     login: () => import('@/components//auth/login'),
     registration: () => import('@/components/auth/AuthRegistration'),
     forgotPassword: () => import('@/components/auth/forgotPassword')

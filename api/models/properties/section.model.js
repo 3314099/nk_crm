@@ -1,6 +1,4 @@
 const { model, Schema } = require('mongoose')
-// const mongoose = require('mongoose')
-// const Schema = mongoose.Schema
 const sectionSchema = new Schema({
   userId: {
     type: Schema.Types.ObjectId,
@@ -23,7 +21,7 @@ const sectionSchema = new Schema({
   },
   visible: {
     type: Boolean,
-    required: true
+    default: true
   }
 })
 

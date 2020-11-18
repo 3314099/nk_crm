@@ -3,6 +3,13 @@ const passport = require('passport')
 const ctr = require('../../../controllers/user/properties/sections.controller')
 const router = Router()
 
+// /api/user/properties/section/fetchSections/:id
+router.get(
+  '/fetchSections/:id',
+  passport.authenticate('jwt', { session: false }),
+  ctr.fetchSections
+)
+
 // POST => /api/user/properties/section
 router.post(
   '/',

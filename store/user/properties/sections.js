@@ -14,80 +14,74 @@ export const mutations = {
 }
 
 export const actions = {
-  chgStateSections ({ commit }, payload) {
-    commit('chgStateSections', payload)
-  },
-  async fetchSections ({ commit }) {
-    try {
-      const response = await this.$axios.$get('/api/user/properties/sections')
-      commit('chgStateSections', response)
-    } catch (err) {
-      commit('setError', err, { root: true })
-      throw err
-    }
-  },
-  async createSection ({ commit, state }, data) {
-    try {
-      const response = await this.$axios.$post('/api/user/properties/section', data)
-      const userData = await this.$axios.$get(`/api/auth/fetchUserData/${data.userId}`)
-      const sections = userData.sections.map((item, index) => {
-        item.order = index + 1
-        return item
-      })
-      commit('chgSectionsState', sections)
-      commit('setResponse', response, { root: true })
-      return response
-    } catch (err) {
-      commit('setError', err, { root: true })
-      throw err
-    }
-  },
-  async editSection ({ commit, state }, data) {
-    try {
-      const response = await this.$axios.$put('/api/user/properties/section', data)
-      const userData = await this.$axios.$get(`/api/auth/fetchUserData/${data.userId}`)
-      const sections = userData.sections.map((item, index) => {
-        item.order = index + 1
-        return item
-      })
-      commit('chgSectionsState', sections)
-      commit('setResponse', response, { root: true })
-      return response
-    } catch (err) {
-      commit('setError', err, { root: true })
-      throw err
-    }
-  },
-  async removeSection ({ commit, state }, data) {
-    try {
-      const response = await this.$axios.$post('/api/user/properties/section/remove', data)
-      const userData = await this.$axios.$get(`/api/auth/fetchUserData/${data.userId}`)
-      const sections = userData.sections
-        .map((item, index) => {
-          item.order = index + 1
-          return item
-        })
-      commit('chgSectionsState', sections)
-      commit('setResponse', response, { root: true })
-      return response
-    } catch (err) {
-      commit('setError', err, { root: true })
-      throw err
-    }
-  },
-  async chgOrderSections ({ commit }, data) {
-    try {
-      const response = await this.$axios.$post('/api/user/properties/section/chgOrderSections', data)
-      return response
-    } catch (err) {
-      commit('setError', err, { root: true })
-      throw err
-    }
-  },
   chgSectionsState ({ commit, state }, sections) {
     commit('chgSectionsState', sections)
+  },
+  async fetchSections ({ dispatch, commit }, userId) {
+    try {
+      const sections = await this.$axios.$get(`/api/user/properties/section/fetchSections/${userId}`)
+      // commit('chgStateSections', orderSections(sections))
+      return orderSections(sections)
+    } catch (err) {
+      dispatch('setAlert', err.response.data.message, { root: true })
+      throw err
+    }
+  },
+  async createSection ({ dispatch, commit, state }, data) {
+    try {
+      const response = await this.$axios.$post('/api/user/properties/section', data)
+      const sections = await this.$axios.$get(`/api/user/properties/section/fetchSections/${data.userId}`)
+      commit('chgSectionsState', orderSections(sections))
+      dispatch('setAlert', response.message, { root: true })
+      return response
+    } catch (err) {
+      dispatch('setAlert', err.response.data.message, { root: true })
+      throw err
+    }
+  },
+  async editSection ({ dispatch, commit, state }, data) {
+    try {
+      const response = await this.$axios.$put('/api/user/properties/section', data)
+      const sections = await this.$axios.$get(`/api/user/properties/section/fetchSections/${data.userId}`)
+      commit('chgSectionsState', orderSections(sections))
+      dispatch('setAlert', response.message, { root: true })
+      return response
+    } catch (err) {
+      dispatch('setAlert', err.response.data.message, { root: true })
+      throw err
+    }
+  },
+  async removeSection ({ dispatch, commit, state }, data) {
+    try {
+      const response = await this.$axios.$post('/api/user/properties/section/remove', data)
+      const sections = await this.$axios.$get(`/api/user/properties/section/fetchSections/${data.userId}`)
+      commit('chgSectionsState', orderSections(sections))
+      dispatch('setAlert', response.message, { root: true })
+      return response
+    } catch (err) {
+      dispatch('setAlert', err.response.data.message, { root: true })
+      throw err
+    }
+  },
+  async chgOrderSections ({ dispatch, commit }, data) {
+    try {
+      const response = await this.$axios.$post('/api/user/properties/section/chgOrderSections', data)
+      // загрузка нового списка не требуется тк store изменен через get на sections.vue
+      dispatch('setAlert', response.message, { root: true })
+      return response
+    } catch (err) {
+      dispatch('setAlert', err.response.data.message, { root: true })
+      throw err
+    }
   }
 }
 export const getters = {
   sections: state => state.sections,
+}
+
+function orderSections (sections) {
+  return sections.map((item, index) => {
+    item.order = index + 1
+    return item
+  })
 }

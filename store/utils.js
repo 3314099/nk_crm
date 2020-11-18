@@ -3,7 +3,11 @@ export const state = () => ({
   commentField: '',
   colorPicker: {},
   loading: false,
-  resetV: false
+  resetV: false,
+  firstVisibleBtn: 'all',
+  secondVisibleBtn: 'all',
+  firstSortBtn: 'drag',
+  secondSortBtn: 'drag',
 })
 
 export const mutations = {
@@ -29,7 +33,25 @@ export const mutations = {
   },
   resetV (state, payload) {
     state.resetV = payload
-  }
+  },
+  chgFirstVisibleBtn (state, payload) {
+    state.firstVisibleBtn = payload
+  },
+  chgSecondVisibleBtn (state, payload) {
+    state.secondVisibleBtn = payload
+  },
+  chgFirstSortBtn (state, payload) {
+    if (!state.searchField && payload === 'search') {
+      payload = 'alphabet'
+    }
+    state.firstSortBtn = payload
+  },
+  chgSecondSortBtn (state, payload) {
+    if (!state.searchField && payload === 'search') {
+      payload = 'alphabet'
+    }
+    state.secondSortBtn = payload
+  },
 }
 
 export const actions = {
@@ -61,5 +83,9 @@ export const getters = {
   commentField: state => state.commentField,
   colorPicker: state => state.colorPicker,
   loading: state => state.loading,
-  resetV: state => state.resetV
+  resetV: state => state.resetV,
+  firstVisibleBtn: state => state.firstVisibleBtn,
+  secondVisibleBtn: state => state.secondVisibleBtn,
+  firstSortBtn: state => state.firstSortBtn,
+  secondSortBtn: state => state.secondSortBtn
 }

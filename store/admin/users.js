@@ -28,101 +28,102 @@ export const actions = {
   chgFullNotes ({ commit }, payload) {
     commit('updateFullNotes', payload)
   },
-  async fetchUsers ({ commit }) {
+  async fetchUsers ({ dispatch, commit }) {
     try {
       const response = await this.$axios.$get('/api/users/admin')
       commit('updateVUsers', response)
     } catch (err) {
-      commit('setError', err, { root: true })
+      dispatch('setAlert', err.response.data.message, { root: true })
       throw err
     }
   },
-  async createUser ({ commit, state }, formData) {
+  async createUser ({ dispatch, commit, state }, formData) {
     try {
       const response = await this.$axios.$post('/api/users/admin/create', formData)
       const users = state.users.concat(response.user)
       commit('updateVUsers', users)
-      commit('setResponse', response, { root: true })
+      dispatch('setAlert', response.message, { root: true })
       return response
     } catch (err) {
-      commit('setError', err, { root: true })
+      dispatch('setAlert', err.response.data.message, { root: true })
       throw err
     }
   },
-  async updateUser ({ commit, state }, user) {
+  async updateUser ({ dispatch, commit, state }, user) {
     try {
       const response = await this.$axios.$put(`/api/users/admin/${user._id}`, user)
       const newUsers = state.users.map((item) => {
         return item._id === user._id ? user : item
       })
       commit('updateVUsers', newUsers)
-      commit('setResponse', response, { root: true })
-    } catch (e) {
-      commit('setError', e, { root: true })
-      throw e
+      dispatch('setAlert', response.message, { root: true })
+      return response
+    } catch (err) {
+      dispatch('setAlert', err.response.data.message, { root: true })
+      throw err
     }
   },
-  async deleteUser ({ commit, state }, id) {
+  async deleteUser ({ dispatch, commit, state }, id) {
     try {
       const response = await this.$axios.$delete(`/api/users/admin/${id}`)
       const users = state.users.filter(user => user._id !== id)
       const newNotes = state.fullNotes.filter(note => note.userId !== id)
       commit('updateVUsers', users)
       commit('updateFullNotes', newNotes)
-      commit('setResponse', response, { root: true })
+      dispatch('setAlert', response.message, { root: true })
       return response
     } catch (err) {
-      commit('setError', err, { root: true })
+      dispatch('setAlert', err.response.data.message, { root: true })
       throw err
     }
   },
-  async createUserNote ({ commit, state }, data) {
+  async createUserNote ({ dispatch, commit, state }, data) {
     try {
       const response = await this.$axios.$post('/api/users/admin/createNote', data)
       const newNotes = state.usersNotes.concat(response.note)
       commit('updateVUsersNotes', newNotes)
-      // commit('setResponse', response, { root: true })
+      dispatch('setAlert', response.message, { root: true })
       return response
     } catch (err) {
-      commit('setError', err, { root: true })
+      dispatch('setAlert', err.response.data.message, { root: true })
       throw err
     }
   },
 
-  async fetchUserById ({ commit }, id) {
+  async fetchUserById ({ dispatch, commit }, id) {
     try {
       return await this.$axios.$get(`/api/users/admin/getUserById/${id}`)
-    } catch (e) {
-      commit('setError', e, { root: true })
-      throw e
+    } catch (err) {
+      dispatch('setAlert', err.response.data.message, { root: true })
+      throw err
     }
   },
-  async fetchUsersNotes ({ commit }) {
+  async fetchUsersNotes ({ dispatch, commit }) {
     try {
       const response = await this.$axios.$get('/api/users/admin/getAllUsersNotes')
       commit('updateVUsersNotes', response)
-    } catch (e) {
-      commit('setError', e, { root: true })
-      throw e
+    } catch (err) {
+      dispatch('setAlert', err.response.data.message, { root: true })
+      throw err
     }
   },
-  async fetch ({ commit }) {
+  async fetch ({ dispatch }) {
     try {
       return await this.$axios.$get('/api/post')
-    } catch (e) {
-      commit('setError', e, { root: true })
-      throw e
+    } catch (err) {
+      dispatch('setAlert', err.response.data.message, { root: true })
+      throw err
     }
   },
-  async remove ({ commit }, id) {
+  async remove ({ dispatch, commit }, id) {
     try {
       return await this.$axios.$delete(`/api/post/admin/${id}`)
-    } catch (e) {
-      commit('setError', e, { root: true })
-      throw e
+    } catch (err) {
+      dispatch('setAlert', err.response.data.message, { root: true })
+      throw err
     }
   },
-  async create ({ commit }, { title, text, image }) {
+  async create ({ dispatch, commit }, { title, text, image }) {
     try {
       const fd = new FormData()
 
@@ -131,41 +132,41 @@ export const actions = {
       fd.append('image', image, image.name)
 
       return await this.$axios.$post('/api/post/admin', fd)
-    } catch (e) {
-      commit('setError', e, { root: true })
-      throw e
+    } catch (err) {
+      dispatch('setAlert', err.response.data.message, { root: true })
+      throw err
     }
   },
-  async fetchAdminById ({ commit }, id) {
+  async fetchAdminById ({ dispatch, commit }, id) {
     try {
       return await this.$axios.$get(`/api/post/admin/${id}`)
-    } catch (e) {
-      commit('setError', e, { root: true })
-      throw e
+    } catch (err) {
+      dispatch('setAlert', err.response.data.message, { root: true })
+      throw err
     }
   },
-  async fetchById ({ commit }, id) {
+  async fetchById ({ dispatch, commit }, id) {
     try {
       return await this.$axios.$get(`/api/post/${id}`)
-    } catch (e) {
-      commit('setError', e, { root: true })
-      throw e
+    } catch (err) {
+      dispatch('setAlert', err.response.data.message, { root: true })
+      throw err
     }
   },
-  async addView ({ commit }, { views, _id }) {
+  async addView ({ dispatch, commit }, { views, _id }) {
     try {
       return await this.$axios.$put(`/api/post/add/view/${_id}`, { views })
-    } catch (e) {
-      commit('setError', e, { root: true })
-      throw e
+    } catch (err) {
+      dispatch('setAlert', err.response.data.message, { root: true })
+      throw err
     }
   },
-  async getAnalytics ({ commit }) {
+  async getAnalytics ({ dispatch }) {
     try {
       return await this.$axios.$get('/api/post/admin/get/analytics')
-    } catch (e) {
-      commit('setError', e, { root: true })
-      throw e
+    } catch (err) {
+      dispatch('setAlert', err.response.data.message, { root: true })
+      throw err
     }
   }
 }

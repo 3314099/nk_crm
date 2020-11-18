@@ -45,7 +45,6 @@ export default {
         this.resetFields()
         this.resetUtils()
         this.resetV()
-        this.$store.dispatch('snackBar/changeSnackBar', 'sectionCreated')
       } catch (err) {
         this.$store.dispatch('utils/chgLoading', false)
       }
