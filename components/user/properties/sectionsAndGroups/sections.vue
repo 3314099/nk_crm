@@ -1,5 +1,10 @@
 <template>
   <div>
+    <div v-if="!sections.length" class="text-center">
+      <h1 class="font-weight-bold display-1 teal--text ">
+        Список пуст
+      </h1>
+    </div>
     <v-container
       id="scroll-target"
       style="max-height: 60vh"
@@ -25,11 +30,21 @@
           >
             <v-card-actions :class="!section.visible ? 'grey lighten-4 ma-0 py-0' : ''">
               <div class="ma-0 pa-0">
-                <v-icon class="handle">
+                <v-icon
+                  v-if="sortBtn === 'drag' && visibleBtn === 'all' && mode === 'default'"
+                  class="handle"
+                >
                   mdi-drag-vertical
+                </v-icon>
+                <v-icon
+                  v-else
+                  disabled
+                >
+                  mdi-drag-vertical-variant
                 </v-icon>
                 <v-btn
                   v-if="section.visible"
+                  :disabled="mode !== 'default'"
                   class="mr-2"
                   icon
                   @click="chgSectionVisible(section)"
@@ -37,7 +52,8 @@
                   <v-icon>mdi-eye-outline</v-icon>
                 </v-btn>
                 <v-btn
-                  v-if="!section.visible"
+                  v-else
+                  :disabled="mode !== 'default'"
                   class="mr-2"
                   icon
                   @click="chgSectionVisible(section)"
@@ -47,7 +63,7 @@
                 <v-chip class="mx-2" small :color="section.color.color">
                   {{ }}
                 </v-chip>
-                <v-tooltip left>
+                <v-tooltip right>
                   <template v-slot:activator="{ on, attrs }">
                     <v-icon
                       class="pl-2"
@@ -59,10 +75,10 @@
                       mdi-information-outline
                     </v-icon>
                   </template>
-                  <span>
-                    v-if="section.comment"
+                  <span v-if="section.comment">
                     {{ section.comment }}
-                    v-else
+                  </span>
+                  <span v-else>
                     Нет комментариев
                   </span>
                 </v-tooltip>
@@ -102,13 +118,38 @@ export default {
   mixins: [getters, sectsAndGroups],
   data () {
     return {
-      drag: false
+      drag: false,
+      dirtySearchField: false
     };
   },
   computed: {
+    mode () {
+      return this.$store.getters['mode/editMode']
+    },
+    sortBtn () {
+      return this.$store.getters['utils/firstSortBtn']
+    },
+    visibleBtn () {
+      return this.$store.getters['utils/firstVisibleBtn']
+    },
+    searchField () {
+      return this.$store.getters['utils/searchField']
+    },
     sections: {
       get () {
-        return this.$store.getters['user/properties/sections/sections']
+        const sections = this.$store.getters['user/properties/sections/sections']
+        let newSections = sections.slice() // создает независимый массив
+        if (this.visibleBtn === 'visible') {
+          newSections = this.UfilterByType(newSections, 'visible', true)
+        } else if (this.visibleBtn === 'unvisible') {
+          newSections = this.UfilterByType(newSections, 'visible', false)
+        }
+        if (this.sortBtn === 'search') {
+          newSections = this.UsortRuEnArray(newSections, this.searchField)
+        } else if (this.sortBtn === 'alphabet') {
+          newSections = this.UsortObjectsArrayByText(newSections, 'title', false)
+        }
+        return newSections
       },
       set (v) {
         this.$store.dispatch('user/properties/sections/chgSectionsState', v)
@@ -124,7 +165,25 @@ export default {
       };
     }
   },
+  watch: {
+    searchField (v) {
+      this.sortBtnBysearchField(v)
+    },
+  },
+  created () {
+    const sections = this.$store.getters['user/properties/sections/sections']
+    this.$store.commit('user/properties/sections/chgSortedSections', sections)
+  },
   methods: {
+    sortBtnBysearchField (v) {
+      if (!this.dirtySearchField && v) {
+        this.dirtySearchField = Boolean(v)
+        this.$store.commit('utils/chgFirstSortBtn', 'search')
+      } else if (this.dirtySearchField && !v) {
+        this.$store.commit('utils/chgFirstSortBtn', 'drag')
+        this.dirtySearchField = false
+      }
+    },
     sort () {
       this.sections = this.sections.sort((a, b) => a.order - b.order);
     },
@@ -147,37 +206,12 @@ export default {
 </script>
 
 <style scoped>
-
-  /*.flip-list-move {*/
-  /*  transition: transform 0.5s;*/
-  /*}*/
-  /*.no-move {*/
-  /*  transition: transform 0s;*/
-  /*}*/
-  /*.ghost {*/
-  /*  opacity: 0.5;*/
-  /*  background: #c8ebfb;*/
-  /*}*/
-
   .list-group {
     min-height: 50px;
   }
-
-  /*.list-group-item {*/
-  /*  cursor: move;*/
-  /*}*/
-
   .list-group-item i {
     cursor: pointer;
   }
-  /*.item {*/
-  /*  border-top: 1px solid #ccc;*/
-  /*  border-left: 1px solid #ccc;*/
-  /*  border-right: 1px solid #ccc;*/
-  /*  padding: 12px 5px;*/
-  /*  box-sizing: border-box;*/
-  /*  background-color: #fff;*/
-  /*}*/
   .handle {
     cursor: grab;
   }

@@ -66,7 +66,6 @@ export default {
       if (alertMessage.log) {
         alertMessage.userId = this.gUser.id
         this.$store.dispatch('logs/logs/createLog', alertMessage)
-        this.$store.dispatch('setAlert', '', { root: true })
       }
       if (alertMessage.alertType === 'snackbar') {
         this.text = alertMessage.text // текст сообщения

@@ -17,35 +17,8 @@ export default {
     formatDate (date, format = 'YY/MM/DD HH:mm') {
       return this.$moment(date).locale('ru').format(format)
     },
-    chgVisibleBtn () {
-      let visibleBtn = 'all'
-      switch (this.visibleBtn) {
-        case 'all':
-          visibleBtn = 'visible'
-          break
-        case 'visible':
-          visibleBtn = 'unvisible'
-          break
-        case 'unvisible':
-          visibleBtn = 'all'
-          break
-      }
-      this.$store.dispatch('chgRBtn', visibleBtn)
-    },
     UfilterByType (array, field, val) { // создает новый массив объектов с учетом свойства объекта и заначения
       return [...array].filter(o => o[field] === val)
-    },
-    sortButton () {
-      return this.$store.getters.sortButton
-    },
-    LBSortButton () {
-      return this.$store.getters.LBsortButton
-    },
-    UsearchField () {
-      return this.$store.getters.searchField
-    },
-    ULBsearchField () {
-      return this.$store.getters.LBsearchField
     },
     UarrayFromObjectsArrayByField (array, field) { // создает массив из свойства объектов
       if (array.length) {
@@ -64,40 +37,6 @@ export default {
           }
         })
         return newArray
-      } else {
-        return []
-      }
-    },
-    UsortByVisibleButton (array) {
-      if (array) {
-        switch (this.$store.getters.visibleButton) {
-          case 'visible':
-            array = this.UfilterByType(array, 'visible', true)
-            break
-          case 'unvisible':
-            array = this.UfilterByType(array, 'visible', false)
-            break
-          default: // 'all'
-            break
-        }
-        return array
-      } else {
-        return []
-      }
-    },
-    UsortByLBVisibleButton (array) {
-      if (array) {
-        switch (this.$store.getters.LBsortButton) {
-          case 'visible':
-            array = this.UfilterByType(array, 'visible', true)
-            break
-          case 'unvisible':
-            array = this.UfilterByType(array, 'visible', false)
-            break
-          default: // 'all'
-            break
-        }
-        return array
       } else {
         return []
       }
@@ -126,35 +65,24 @@ export default {
       }
     },
     UsortObjectsArrayByNumber (array, field, reverse = false) {
-      if (reverse) {
-        return [...array].sort((a, b) => a[field] > b[field] ? 1 : -1).reverse()
-      } else {
-        return [...array].sort((a, b) => a[field] > b[field] ? 1 : -1)
-      }
+      const newArray = array.sort((a, b) => a[field] > b[field] ? 1 : -1)
+      return reverse ? newArray.reverse() : newArray
     },
     UsortObjectsArrayByText (array, field, reverse = false) {
-      array = array.sort(function (a, b) {
+      const newArray = array.sort(function (a, b) {
         const nameA = a[field].toString().toLowerCase()
         const nameB = b[field].toString().toLowerCase()
         if (nameA < nameB) { return -1 }
         if (nameA > nameB) { return 1 }
         return 0
       })
-      if (reverse) {
-        array = array.reverse()
-      }
-      return array
+      return reverse ? newArray.reverse() : newArray
     },
     UsortRuEnArray (arr, val) {
-      if (!val) {
-        return arr
-      } else {
-        const newArr = arr.filter((item) => {
-          return ((item.title.toLowerCase()).includes(this.translate(val).ru.toLowerCase()) ||
-            (item.title.toLowerCase()).includes(this.translate(val).en.toLowerCase()))
-        })
-        return newArr
-      }
+      return val ? arr.filter(item =>
+        ((item.title.toLowerCase()).includes(this.translate(val).ru.toLowerCase()) ||
+          (item.title.toLowerCase()).includes(this.translate(val).en.toLowerCase()))
+      ) : arr
     },
     translate (val) {
       const translate = {
