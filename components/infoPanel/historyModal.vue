@@ -258,13 +258,13 @@ export default {
         return this.$store.getters.modal === 'history'
       },
       set () {
-        this.$store.dispatch('setModal', '')
+        this.$store.commit('setModal', '')
       }
     },
   },
   methods: {
     close () {
-      this.$store.dispatch('setModal', '')
+      this.$store.commit('setModal', '')
     }
   }
 }
