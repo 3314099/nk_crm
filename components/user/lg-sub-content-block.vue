@@ -6,7 +6,7 @@
 export default {
   name: 'LgSubContentBlock',
   components: {
-    sectionsAndGroupsMain: () => import('@/components/user/properties/sectionsAndGroups/SectionsAndGroupsMain'),
+    sectionsAndGroupsMain: () => import('@/components/user/properties/sectionsAndGroups/sectionsAndGroupsMain'),
     accountsMain: () => import('@/components/user/properties/accounts/accountsMain'),
     categoriesMain: () => import('@/components/user/properties/categories/categoriesMain'),
     filtersMain: () => import('@/components/user/properties/filters/filtersMain'),
