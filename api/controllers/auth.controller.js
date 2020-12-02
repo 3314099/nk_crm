@@ -90,7 +90,10 @@ module.exports.remove = async (req, res) => {
 
 module.exports.fetchUserData = async (req, res) => {
   try {
-    const user = await User.findById(req.params.id).populate(['logs', 'sections'])
+    const user = await User.findById(req.params.id)
+      .populate([
+        'logs', 'sections', 'groups', 'categoriesGroups', 'categories'
+      ])
     res.json(user)
   } catch (e) {
     res.status(500).json({ message: 'failedFetchUserData' })

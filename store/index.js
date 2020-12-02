@@ -37,24 +37,6 @@ export const mutations = {
 export const actions = {
   nuxtServerInit ({ dispatch }) {
     dispatch('auth/autoLogin')
-  },
-  setAlert ({ commit }, payload) {
-    commit('setAlert', payload)
-  },
-  setModal ({ commit }, payload) {
-    commit('setModal', payload)
-  },
-  setResponse ({ commit }, payload) {
-    commit('setResponse', payload)
-  },
-  chgBuzyEmail ({ commit }, payload) {
-    commit('chgBuzyEmail', payload)
-  },
-  chgMessage ({ commit }, payload) {
-    commit('chgMessage', payload)
-  },
-  clearResponse ({ commit }) {
-    commit('clearResponse')
   }
 }
 

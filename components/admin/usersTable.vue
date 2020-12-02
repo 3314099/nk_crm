@@ -305,10 +305,10 @@ export default {
       } else {
         newItem.role = 'admin'
       }
-      this.$store.dispatch('admin/users/updateUser', newItem)
+      this.$store.commit('admin/users/updateUser', newItem)
     },
     chgUser (item) {
-      this.$store.dispatch('mode/chgEditMode', { mode: 'editUser', item })
+      this.$store.commit('mode/chgEditMode', { mode: 'editUser', item })
     },
     initialize () {
     },

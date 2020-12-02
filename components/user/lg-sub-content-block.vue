@@ -15,7 +15,40 @@ export default {
   },
   computed: {
     component () {
-      return 'sectionsAndGroupsMain'
+      const vTabMode = this.$store.getters['mode/tabMode']
+      let component
+      switch (vTabMode.tab) {
+        case ('propertyAccounts'):
+          component = 'accountsMain'
+          break
+        case ('propertyCategories'):
+          component = 'categoriesMain'
+          break
+        case ('propertyFilters'):
+          component = 'filtersMain'
+          break
+        case ('propertyTags'):
+          component = 'tagsMain'
+          break
+        case ('propertyParticipants'):
+          component = 'participantsMain'
+          break
+        default:
+          component = 'sectionsAndGroupsMain'
+          break
+      }
+      return component
+    }
+  },
+  created () {
+    const vTabMode = this.$store.getters['mode/tabMode']
+    if (!vTabMode.tab || !vTabMode.tab.includes('property')) {
+      this.chgTabMode('propertySectAndGrps')
+    }
+  },
+  methods: {
+    chgTabMode (mode) {
+      this.$store.commit('mode/chgTabMode', { tab: mode, content: 'default' })
     }
   }
 }

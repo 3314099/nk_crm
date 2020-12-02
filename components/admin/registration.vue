@@ -289,13 +289,13 @@ export default {
       const item = this.$store.getters['mode/editItem']
       switch (val) {
         case 'deleteUser':
-          this.$store.dispatch('mode/chgEditMode', { mode: 'deleteUser', item })
+          this.$store.commit('mode/chgEditMode', { mode: 'deleteUser', item })
           break
         case 'cancelDelete':
-          this.$store.dispatch('mode/chgEditMode', { mode: 'editUser', item })
+          this.$store.commit('mode/chgEditMode', { mode: 'editUser', item })
           break
         default:
-          this.$store.dispatch('mode/chgEditMode', { mode: '', item: {} })
+          this.$store.commit('mode/chgEditMode', { mode: '', item: {} })
           break
       }
     },
@@ -346,7 +346,7 @@ export default {
       }
     },
     chgContentMode (mode) {
-      this.$store.dispatch('mode/chgContentMode', { contentMode: mode })
+      this.$store.commit('mode/chgContentMode', { contentMode: mode })
     },
     async submitHeandler (mode) {
       this.loading = true
@@ -381,7 +381,7 @@ export default {
           role
         }
         await this.$store.dispatch('admin/users/createUser', formData)
-        this.$store.dispatch('mode/chgEditMode', { mode: '', item: {} })
+        this.$store.commit('mode/chgEditMode', { mode: '', item: {} })
         this.resetFields()
       } catch (err) {
         // this.loading = false
@@ -401,7 +401,7 @@ export default {
           role
         }
         await this.$store.dispatch('admin/users/updateUser', formData)
-        this.$store.dispatch('mode/chgEditMode', { mode: '', item: {} })
+        this.$store.commit('mode/chgEditMode', { mode: '', item: {} })
         this.resetFields()
       } catch (err) {
         // console.log(222)
@@ -412,7 +412,7 @@ export default {
     async deleteUser () {
       try {
         await this.$store.dispatch('admin/users/deleteUser', this.editItem._id)
-        this.$store.dispatch('mode/chgEditMode', { mode: '', item: {} })
+        this.$store.commit('mode/chgEditMode', { mode: '', item: {} })
         this.chgUserNote()
         this.resetFields()
       } catch (err) {

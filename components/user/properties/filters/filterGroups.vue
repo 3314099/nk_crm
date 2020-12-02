@@ -6,7 +6,15 @@
 
 <script>
 export default {
-  name: 'FilterGroups'
+  name: 'FiltersGroups',
+  components: {
+  },
+  data () {
+    return {
+    }
+  },
+  methods: {
+  }
 }
 </script>
 

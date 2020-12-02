@@ -1,17 +1,18 @@
 <template>
-  <div>
+  <div class="ml-2 mr-1 mt-1 mb-2">
     <div v-if="!sections.length" class="text-center">
-      <h1 class="font-weight-bold display-1 teal--text ">
+      <h1 class="font-weight-bold display-1 teal--text">
         Список пуст
       </h1>
     </div>
     <v-container
       id="scroll-target"
       style="max-height: 60vh"
-      class="pt-1 pl-0 overflow-y-auto"
+      class="pa-0 pr-2 overflow-y-auto"
     >
       <draggable
         v-model="sections"
+        :group="sections"
         class="list-group"
         v-bind="dragOptions"
         handle=".handle"
@@ -137,22 +138,22 @@ export default {
     },
     sections: {
       get () {
-        const sections = this.$store.getters['user/properties/sections/sections']
-        let newSections = sections.slice() // создает независимый массив
+        const arr = this.$store.getters['user/properties/sections/sections']
+        let newArr = arr.slice() // создает независимый массив (без ссылок на родителя)
         if (this.visibleBtn === 'visible') {
-          newSections = this.UfilterByType(newSections, 'visible', true)
+          newArr = this.UfilterByType(newArr, 'visible', true)
         } else if (this.visibleBtn === 'unvisible') {
-          newSections = this.UfilterByType(newSections, 'visible', false)
+          newArr = this.UfilterByType(newArr, 'visible', false)
         }
         if (this.sortBtn === 'search') {
-          newSections = this.UsortRuEnArray(newSections, this.searchField)
+          newArr = this.UsortRuEnArray(newArr, this.searchField)
         } else if (this.sortBtn === 'alphabet') {
-          newSections = this.UsortObjectsArrayByText(newSections, 'title', false)
+          newArr = this.UsortObjectsArrayByText(newArr, 'title', false)
         }
-        return newSections
+        return newArr
       },
       set (v) {
-        this.$store.dispatch('user/properties/sections/chgSectionsState', v)
+        this.$store.dispatch('user/properties/sections/chgSections', v)
         this.MXchgOrderSections(v)
       }
     },
@@ -169,10 +170,6 @@ export default {
     searchField (v) {
       this.sortBtnBysearchField(v)
     },
-  },
-  created () {
-    const sections = this.$store.getters['user/properties/sections/sections']
-    this.$store.commit('user/properties/sections/chgSortedSections', sections)
   },
   methods: {
     sortBtnBysearchField (v) {
@@ -194,12 +191,12 @@ export default {
       this.$store.dispatch('utils/chgCommentField', section.comment)
       this.$store.dispatch('utils/chgColorPicker', section.color)
     },
-    chgSectionVisible (section) {
-      const newSection = Object.assign({}, section)
-      newSection.sectionId = section._id
-      newSection.userId = this.gUser.id
-      newSection.visible = !section.visible
-      this.MXtoEditSection(newSection)
+    chgSectionVisible (item) {
+      const newItem = Object.assign({}, item)
+      newItem.sectionId = item._id
+      newItem.userId = this.gUser.id
+      newItem.visible = !item.visible
+      this.MXtoEditSection(newItem)
     }
   }
 }

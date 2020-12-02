@@ -1,15 +1,21 @@
 <template>
   <div>
-    <h1>filters</h1>
+    <h1>Filters</h1>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'Filters'
+  name: 'Filters',
+  components: { },
+  data () {
+    return {
+    }
+  },
+  methods: {
+  }
 }
 </script>
 
 <style scoped>
-
 </style>

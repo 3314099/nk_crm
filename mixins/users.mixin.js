@@ -28,7 +28,7 @@ export default {
         return note
       })
       newNotes = this.UsortObjectsArrayByText(newNotes, 'date', true)
-      this.$store.dispatch('admin/users/chgFullNotes', newNotes)
+      this.$store.commit('admin/users/updateFullNotes', newNotes)
     }
   }
 }

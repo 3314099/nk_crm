@@ -1,26 +1,18 @@
 export const state = () => ({
-  sections: [],
-  sortedSections: []
+  sections: []
 })
 
 export const mutations = {
-  chgSectionsState (state, payload) {
+  chgSections (state, payload) {
     state.sections = payload
-  },
-  chgSortedSections (state, payload) {
-    state.sortedSections = payload
   }
 }
 
 export const actions = {
-  chgSectionsState ({ commit }, sections) {
-    commit('chgSectionsState', sections)
-  },
   async fetchSections ({ commit }, userId) {
     try {
-      const sections = await this.$axios.$get(`/api/user/properties/section/fetchSections/${userId}`)
-      // commit('chgStateSections', orderSections(sections))
-      return orderSections(sections)
+      const arr = await this.$axios.$get(`/api/user/properties/section/fetchSections/${userId}`)
+      commit('chgSections', orderItems(arr))
     } catch (err) {
       commit('setAlert', err.response.data.message, { root: true })
       throw err
@@ -29,8 +21,8 @@ export const actions = {
   async createSection ({ commit }, data) {
     try {
       const response = await this.$axios.$post('/api/user/properties/section', data)
-      const sections = await this.$axios.$get(`/api/user/properties/section/fetchSections/${data.userId}`)
-      commit('chgSectionsState', orderSections(sections))
+      const arr = await this.$axios.$get(`/api/user/properties/section/fetchSections/${data.userId}`)
+      commit('chgSections', orderItems(arr))
       commit('setAlert', response.message, { root: true })
       return response
     } catch (err) {
@@ -41,8 +33,8 @@ export const actions = {
   async editSection ({ commit }, data) {
     try {
       const response = await this.$axios.$put('/api/user/properties/section', data)
-      const sections = await this.$axios.$get(`/api/user/properties/section/fetchSections/${data.userId}`)
-      commit('chgSectionsState', orderSections(sections))
+      const arr = await this.$axios.$get(`/api/user/properties/section/fetchSections/${data.userId}`)
+      commit('chgSections', orderItems(arr))
       commit('setAlert', response.message, { root: true })
       return response
     } catch (err) {
@@ -53,8 +45,8 @@ export const actions = {
   async removeSection ({ commit }, data) {
     try {
       const response = await this.$axios.$post('/api/user/properties/section/remove', data)
-      const sections = await this.$axios.$get(`/api/user/properties/section/fetchSections/${data.userId}`)
-      commit('chgSectionsState', orderSections(sections))
+      const arr = await this.$axios.$get(`/api/user/properties/section/fetchSections/${data.userId}`)
+      commit('chgSections', orderItems(arr))
       commit('setAlert', response.message, { root: true })
       return response
     } catch (err) {
@@ -75,12 +67,11 @@ export const actions = {
   }
 }
 export const getters = {
-  sections: state => state.sections,
-  sortedSections: state => state.sortedSections,
+  sections: state => state.sections
 }
 
-function orderSections (sections) {
-  return sections.map((item, index) => {
+function orderItems (items) {
+  return items.map((item, index) => {
     item.order = index + 1
     return item
   })

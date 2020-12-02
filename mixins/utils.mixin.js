@@ -17,6 +17,12 @@ export default {
     formatDate (date, format = 'YY/MM/DD HH:mm') {
       return this.$moment(date).locale('ru').format(format)
     },
+    orderItems (items) {
+      return items.map((item, index) => {
+        item.order = index + 1
+        return item
+      })
+    },
     UfilterByType (array, field, val) { // создает новый массив объектов с учетом свойства объекта и заначения
       return [...array].filter(o => o[field] === val)
     },
@@ -28,12 +34,13 @@ export default {
       }
     },
     UsortFromObjectsArrayByArray (ObjectsArray, Array, field) {
-      const newArray = []
-      if (Array.length) {
+      let newArray = []
+      if (Array.length && ObjectsArray.length) {
         Array.forEach((item) => {
-          const newItem = ObjectsArray.find(objectsItem => objectsItem[field] === item)
+          const newItem = ObjectsArray
+            .filter(objectsItem => objectsItem[field].toString() === item.toString())
           if (newItem) {
-            newArray.push(newItem)
+            newArray = newArray.concat(newItem)
           }
         })
         return newArray

@@ -71,7 +71,7 @@ export default {
         this.text = alertMessage.text // текст сообщения
         this.color = alertMessage.color
         this.snackbar = true // true/false
-        this.$store.dispatch('setAlert', '', { root: true })
+        this.$store.commit('setAlert', '', { root: true })
       }
     },
   }

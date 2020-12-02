@@ -87,14 +87,14 @@ export default {
         .filter(color => !colorsIgnore.includes(color.color))
       if (this.editItem.color) { colorsArray.unshift(this.editItem.color) }
       if (!this.colorPicker.color) {
-        this.$store.dispatch('utils/chgColorPicker', colorsArray[0])
+        this.$store.commit('utils/chgColorPicker', colorsArray[0])
       }
       return colorsArray.slice(0, 10)
     }
   },
   methods: {
     chgColorPicker (val) {
-      this.$store.dispatch('utils/chgColorPicker', val)
+      this.$store.commit('utils/chgColorPicker', val)
     }
   }
 }

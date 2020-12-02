@@ -386,7 +386,7 @@ export default {
   },
   methods: {
     chgVuexMode (val) {
-      this.$store.dispatch('mode/chgEditMode', { mode: val, item: {} })
+      this.$store.commit('mode/chgEditMode', { mode: val, item: {} })
     },
     chgComponent () {
       const editMode = this.$store.getters['mode/editMode']
@@ -406,7 +406,7 @@ export default {
       this.subscribed = !this.subscribed
     },
     snackBar (val) {
-      this.$store.dispatch('snackBar/changeSnackBar', val)
+      this.$store.commit('snackBar/changeSnackBar', val)
     }
   },
   head: {

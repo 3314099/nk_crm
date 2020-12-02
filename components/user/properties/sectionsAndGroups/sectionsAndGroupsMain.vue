@@ -5,9 +5,12 @@
         cols="12"
         :sm="cols"
       >
-        <v-card
-          class="fullScreen pa-2"
-        >
+        <v-card>
+          <v-system-bar
+            color="teal"
+            dark
+            height="8px"
+          />
           <sections />
         </v-card>
       </v-col>
@@ -15,9 +18,12 @@
         cols="12"
         :sm="cols"
       >
-        <v-card
-          class="fullScreen pa-2"
-        >
+        <v-card>
+          <v-system-bar
+            color="green"
+            dark
+            height="8px"
+          />
           <groups />
         </v-card>
       </v-col>
@@ -49,7 +55,4 @@ export default {
 </script>
 
 <style scoped>
-.fullScreen {
-   height: 100%;
- }
 </style>

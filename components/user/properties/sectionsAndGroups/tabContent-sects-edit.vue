@@ -108,12 +108,10 @@ export default {
   },
   computed: {
     resetV () {
-      const bool = this.gResetV
-      if (bool) {
+      if (this.gResetV) {
         this.$v.$reset()
-        this.$store.dispatch('utils/resetV', false)
       }
-      return bool
+      return this.gResetV
     },
     titleField: {
       get () {
@@ -122,7 +120,7 @@ export default {
       set (v) {
         let searchField = ''
         v ? searchField = v : searchField = ''
-        this.$store.dispatch('utils/chgSearchField', searchField)
+        this.$store.commit('utils/chgSearchField', searchField)
       }
     },
     commentField: {
@@ -132,12 +130,8 @@ export default {
       set (v) {
         let commentField = ''
         v ? commentField = v : commentField = ''
-        this.$store.dispatch('utils/chgCommentField', commentField)
+        this.$store.commit('utils/chgCommentField', commentField)
       }
-    },
-    colorsIgnore () {
-      this.toChgByEditItem()
-      return this.MXcolorsIgnoreArray()
     },
     valTitleField () {
       let unique = true
@@ -191,9 +185,9 @@ export default {
     },
     toChgByEditItem () {
       if (this.getEditItem()) {
-        this.$store.dispatch('utils/chgSearchField', this.getEditItem().title)
-        this.$store.dispatch('utils/chgCommentField', this.getEditItem().comment)
-        this.$store.dispatch('utils/chgColorPicker', this.getEditItem().color)
+        this.$store.commit('utils/chgSearchField', this.getEditItem().title)
+        this.$store.commit('utils/chgCommentField', this.getEditItem().comment)
+        this.$store.commit('utils/chgColorPicker', this.getEditItem().color)
       }
     },
     button (mode) {
@@ -229,11 +223,11 @@ export default {
         case 'remove':
           item.sectionId = this.getEditItem()._id
           item.userId = this.gUser.id
-          this.$store.dispatch('utils/chgLoading', 'true')
+          this.$store.commit('utils/chgLoading', 'true')
           this.MXtoRemoveSection(item)
           break
         default: // cancel
-          this.$store.dispatch('mode/chgTabMode', { tab: 'propertySectAndGrps', content: 'default' })
+          this.$store.commit('mode/chgTabMode', { tab: 'propertySectAndGrps', content: 'default' })
           break
       }
     }

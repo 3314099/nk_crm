@@ -1,5 +1,6 @@
 <template>
   <div>
+    <div v-if="resetV === 'fake'" />
     <v-card
       flat
     >
@@ -11,7 +12,7 @@
                 v-model="titleField"
                 class="pa-1"
                 style="min-width: 400px"
-                label="Наименование раздела"
+                label="Наименование группы"
                 type="String"
                 hint="Не менее 3-х и не более 15-ти символов"
                 :error-messages="titleFieldErrors"
@@ -23,26 +24,26 @@
                 @blur="$v.titleField.$touch()"
               />
             </div>
-            <div class="d-flex justify-space-around">
-              <div>
-                <v-radio-group
-                  v-model="radio"
-                  row
-                  class="mt-2"
-                  style="width: 450px; margin-left: 100px"
-                >
-                  <v-radio
-                    class="mx-5"
-                    label="Активы"
-                    value="radio-1"
-                  />
-                  <v-radio
-                    class="mx-5"
-                    label="Пассивы"
-                    value="radio-2"
-                  />
-                </v-radio-group>
-              </div>
+            <div
+              class="d-flex justify-center justify-align-items: center"
+              style="width: 468px;"
+            >
+              <v-radio-group
+                v-model="typeOfGroup"
+                class="pa-0 ma-auto"
+                row
+              >
+                <v-radio
+                  class="mx-5"
+                  label="Активы"
+                  value="assets"
+                />
+                <v-radio
+                  class="mx-5"
+                  label="Пассивы"
+                  value="liabilities"
+                />
+              </v-radio-group>
             </div>
           </div>
           <div>
@@ -64,7 +65,7 @@
         </div>
         <div class="d-flex justify-start ml-5 pb-4">
           <div class="d-flex justify-start justify-space-between flex-column align-center ">
-            <div v-if="getEditMode() !== 'edit'">
+            <div v-if="getEditMode() === 'edit'">
               <v-btn
                 outlined
                 color="red"
@@ -100,10 +101,11 @@
 
 <script>
 import { validationMixin } from 'vuelidate'
+import getters from '@/mixins/getters'
 import sectsAndGroups from '@/mixins/user/properties/sectsAndGroups.mixin'
 export default {
   name: 'TabContentGroupEdit',
-  mixins: [validationMixin, sectsAndGroups],
+  mixins: [validationMixin, getters, sectsAndGroups],
   validations: {
     titleField: {
       unique () {
@@ -121,10 +123,16 @@ export default {
   },
   data: () => {
     return {
-      radio: 'radio-1'
+      typeOfGroup: 'assets'
     }
   },
   computed: {
+    resetV () {
+      if (this.gResetV) {
+        this.$v.$reset()
+      }
+      return this.gResetV
+    },
     titleField: {
       get () {
         return this.$store.getters['utils/searchField']
@@ -132,7 +140,7 @@ export default {
       set (v) {
         let searchField = ''
         v ? searchField = v : searchField = ''
-        this.$store.dispatch('utils/chgSearchField', searchField)
+        this.$store.commit('utils/chgSearchField', searchField)
       }
     },
     commentField: {
@@ -142,7 +150,7 @@ export default {
       set (v) {
         let commentField = ''
         v ? commentField = v : commentField = ''
-        this.$store.dispatch('utils/commentField', commentField)
+        this.$store.commit('utils/chgCommentField', commentField)
       }
     },
     colorsIgnore () {
@@ -151,12 +159,12 @@ export default {
     },
     valTitleField () {
       let unique = true
-      const findUnique = this.MXsections()
+      const findUnique = this.MXgroups()
         .find(item => item.title.toLowerCase() === this.titleField.toLowerCase())
       if (findUnique) { unique = false }
       if (this.getEditItem().title) {
         if (this.getEditItem() && this.titleField.toLowerCase() ===
-          this.getEditItem().title.toLowerCase()) {
+            this.getEditItem().title.toLowerCase()) {
           unique = true
         }
       }
@@ -191,16 +199,19 @@ export default {
   },
   methods: {
     getEditMode () {
-      return this.$store.getters['mode/editMode']
+      return this.gEditMode
     },
     getEditItem () {
-      return this.$store.getters['mode/editItem']
+      return this.gEditItem
+    },
+    getUser () {
+      return this.gUser
     },
     toChgByEditItem () {
       if (this.getEditItem()) {
-        this.$store.dispatch('utils/chgSearchField', this.getEditItem().title)
-        this.$store.dispatch('utils/chgCommentField', this.getEditItem().comment)
-        this.$store.dispatch('utils/chgColorPicker', this.getEditItem().color)
+        this.$store.commit('utils/chgSearchField', this.getEditItem().title)
+        this.$store.commit('utils/chgCommentField', this.getEditItem().comment)
+        this.$store.commit('utils/chgColorPicker', this.getEditItem().color)
       }
     },
     button (mode) {
@@ -213,39 +224,36 @@ export default {
             return
           }
           this.$store.dispatch('utils/chgLoading', 'true')
+          item.userId = this.gUser.id
           item.title = this.titleField
           item.comment = this.commentField
-          item.color = this.$store.getters['utils/colorPicker']
+          item.typeOfGroup = this.typeOfGroup
           item.visible = true
-          this.MXtoCreateSection(item)
+          this.MXtoCreateGroup(item)
           break
         case 'edit':
           if (this.$v.$invalid) {
             this.$v.$touch()
             return
           }
-          this.$store.dispatch('utils/chgLoading', 'true')
-          item.id = this.getEditItem().id
+          item.groupId = this.getEditItem()._id
+          item.userId = this.gUser.id
           item.title = this.titleField
           item.comment = this.commentField
-          item.color = this.$store.getters.colorPicker
+          item.typeOfGroup = this.typeOfGroup
           item.visible = true
-          this.MXtoEditSection(item)
+          this.MXtoEditGroup(item)
           break
         case 'remove':
-          this.$store.dispatch('utils/chgLoading', 'true')
-          this.MXtoRemoveSection(this.getEditItem().id)
+          item.groupId = this.getEditItem()._id
+          item.userId = this.gUser.id
+          this.$store.commit('utils/chgLoading', 'true')
+          this.MXtoRemoveGroup(item)
           break
         default: // cancel
+          this.$store.commit('mode/chgTabMode', { tab: 'propertySectAndGrps', content: 'default' })
           break
       }
-      this.$v.$reset()
-      this.$store.dispatch('utils/colorPicker', '')
-      this.$store.dispatch('utils/chgSearchField', '')
-      this.$store.dispatch('utils/chgCommentField', '')
-      this.$store.dispatch('mode/chgEditMode', '')
-      this.$store.dispatch('mode/chgItemMode', 'default')
-      this.$store.dispatch('mode/chgEditItem', {})
     }
   }
 }

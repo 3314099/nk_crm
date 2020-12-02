@@ -12,6 +12,10 @@
   </div>
 </template>
 
+<!--<transition name="component-fade" mode="out-in">-->
+<!--  <component :is="tabContent" />-->
+<!--</transition>-->
+
 <script>
 export default {
   name: 'LgMainBlock',

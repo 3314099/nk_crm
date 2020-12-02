@@ -2,33 +2,50 @@ export default {
   computed: {
     routing () {
       return this.$route.path
+    },
+    tabModeContent () {
+      const tabMode = this.$store.getters['mode/tabMode']
+      return tabMode.content
     }
   },
   watch: {
     routing (v) {
       this.resetMode(v)
+    },
+    tabModeContent (v) {
+      this.resetV(v)
     }
   },
   created () {
     this.resetMode(this.$route.path)
   },
   methods: {
+    resetV (v) {
+      if (v === 'default') {
+        this.$store.commit('utils/resetV', true)
+      } else {
+        this.$store.commit('utils/resetV', false)
+      }
+    },
     resetMode (v) {
+      this.resetV('default')
       this.resetUtils()
-      this.$store.dispatch('mode/chgTabMode', { tab: '', content: 'default' })
-      this.$store.dispatch('mode/chgEditMode', { mode: 'default', item: {} })
-      this.$store.dispatch('mode/resetMode')
-      this.$store.dispatch('mode/chgPageMode', v)
+      this.$store.commit('mode/chgTabMode', { tab: '', content: 'default' })
+      this.$store.commit('mode/chgEditMode', { mode: 'default', item: {} })
+      this.$store.commit('mode/resetMode')
+      this.$store.commit('mode/chgPageMode', v)
     },
     resetUtils () {
-      this.$store.dispatch('utils/resetUtils')
-      this.$store.dispatch('utils/resetV', true)
+      this.$store.commit('utils/resetUtils')
     },
     resetFields () {
-      this.$store.dispatch('utils/resetFields')
+      this.$store.commit('utils/resetFields')
     },
     resetEditMode () {
-      this.$store.dispatch('mode/chgEditMode', { mode: 'default', item: {} })
-    }
+      this.$store.commit('mode/chgEditMode', { mode: 'default', item: {} })
+    },
+    resetButtons () {
+      this.$store.commit('utils/resetButtons')
+    },
   },
 }

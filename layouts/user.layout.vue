@@ -3,6 +3,7 @@
     <div>
       <historyModal />
       <logsModal />
+      <categiriesGroupsIcons />
       <SnackBar />
       <Navbar />
       <Drawer />
@@ -10,14 +11,14 @@
     <div class="mt-2">
       <nuxt />
     </div>
-    <v-footer padless>
-      <v-col
-        class="text-center"
-        cols="12"
-      >
-        {{ new Date().getFullYear() }} — <strong>Vuetify</strong>
-      </v-col>
-    </v-footer>
+    <!--    <v-footer padless>-->
+    <!--      <v-col-->
+    <!--        class="text-center"-->
+    <!--        cols="12"-->
+    <!--      >-->
+    <!--        {{ new Date().getFullYear() }} — <strong>Vuetify</strong>-->
+    <!--      </v-col>-->
+    <!--    </v-footer>-->
   </v-app>
 </template>
 
@@ -32,6 +33,7 @@ export default {
   components: {
     SnackBar: () => import('@/components/infoPanel/SnackBar'),
     historyModal: () => import('@/components/infoPanel/historyModal'),
+    categiriesGroupsIcons: () => import('@/components/user/properties/categories/iconsModal'),
     logsModal: () => import('@/components/infoPanel/logs'),
     Navbar: () => import('@/components/layoutsComponents/user/Navbar'),
     Drawer: () => import('@/components/layoutsComponents/user/Drawer'),
@@ -51,6 +53,8 @@ export default {
       if (this.tabModeContent === 'default') {
         this.resetFields()
         this.resetEditMode()
+        this.resetUtils()
+        this.resetButtons()
       }
     },
   },

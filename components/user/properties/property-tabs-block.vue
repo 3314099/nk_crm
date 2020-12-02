@@ -93,7 +93,7 @@ export default {
   },
   methods: {
     chgTabMode (mode) {
-      this.$store.dispatch('mode/chgTabMode', { tab: mode, content: 'default' })
+      this.$store.commit('mode/chgTabMode', { tab: mode, content: 'default' })
     }
   }
 }

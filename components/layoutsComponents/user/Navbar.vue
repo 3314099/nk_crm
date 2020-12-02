@@ -190,7 +190,7 @@ export default {
   },
   methods: {
     openModal (val) {
-      this.$store.dispatch('setModal', val)
+      this.$store.commit('setModal', val)
     },
     profile () {
 

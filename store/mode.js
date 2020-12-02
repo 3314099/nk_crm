@@ -31,21 +31,6 @@ export const mutations = {
 }
 
 export const actions = {
-  chgEditMode ({ commit }, payload) {
-    commit('chgEditMode', payload)
-  },
-  chgContentMode ({ commit }, payload) {
-    commit('chgContentMode', payload)
-  },
-  chgTabMode ({ commit }, payload) {
-    commit('chgTabMode', payload)
-  },
-  chgPageMode ({ commit }, payload) {
-    commit('chgPageMode', payload)
-  },
-  resetMode ({ commit }) {
-    commit('resetMode')
-  }
 }
 
 export const getters = {

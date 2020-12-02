@@ -1,13 +1,15 @@
 <template>
   <div>
-    <v-row>
+    <v-row
+      class="mx-4"
+    >
       <v-col
         cols="12"
         sm="4"
         class="ma-0 pa-0"
       >
-        <div class="d-flex justify-center">
-          <h1>Разделы</h1>
+        <div class="d-flex justify-center font-weight-bold teal--text ma-3">
+          <h1>РАЗДЕЛЫ</h1>
         </div>
         <div class="d-flex justify-center">
           <contentVisibleBtn num-of-btn="first" />
@@ -26,8 +28,7 @@
             <div class="d-flex justify-center">
               <v-text-field
                 v-model="searchField"
-                class="pa-1 ma-0"
-                style="max-width: 373px"
+                class="py-1 px-0 ma-0"
                 label="Строка поиска"
                 type="String"
                 dense
@@ -37,26 +38,20 @@
                 hide-details
               />
             </div>
-            <div class="d-flex justify-center">
-              <div
-                class="pa-1"
-              >
+            <div class="d-flex justify-space-between my-1">
+              <div>
                 <v-btn
-                  class="mx-1"
                   outlined
-                  color="primary"
+                  color="teal"
                   @click="chgTabContentMode('TabContentSectsEdit')"
                 >
                   Создать раздел
                 </v-btn>
               </div>
-              <div
-                class="pa-1"
-              >
+              <div>
                 <v-btn
-                  class="mx-1"
                   outlined
-                  color="primary"
+                  color="green"
                   @click="chgTabContentMode('TabContentGroupsEdit')"
                 >
                   Создать группу
@@ -71,10 +66,12 @@
         sm="4"
         class="ma-0 pa-0"
       >
-        <div class="d-flex justify-center">
-          <h1>Группы</h1>
+        <div class="d-flex justify-center font-weight-bold green--text ma-3">
+          <h1>ГРУППЫ</h1>
         </div>
-        <div class="d-flex justify-center">
+        <div
+          class="d-flex justify-center"
+        >
           <contentVisibleBtn num-of-btn="second" />
           <contentSortBtn num-of-btn="second" />
         </div>
@@ -99,14 +96,14 @@ export default {
       set (v) {
         let searchField = ''
         v ? searchField = v : searchField = ''
-        this.$store.dispatch('utils/chgSearchField', searchField)
+        this.$store.commit('utils/chgSearchField', searchField)
       }
     },
   },
   methods: {
     chgTabContentMode (mode) {
-      this.$store.dispatch('mode/chgTabMode', { tab: 'propertySectAndGrps', content: mode })
-      this.$store.dispatch('mode/chgEditMode', { mode: 'create', item: {} })
+      this.$store.commit('mode/chgTabMode', { tab: 'propertySectAndGrps', content: mode })
+      this.$store.commit('mode/chgEditMode', { mode: 'create', item: {} })
     }
   }
 }

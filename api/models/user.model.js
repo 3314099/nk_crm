@@ -2,6 +2,12 @@ const { model, Schema } = require('mongoose')
 // const mongoose = require('mongoose')
 // const Schema = mongoose.Schema
 const userSchema = new Schema({
+  logs: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'logs'
+    }
+  ],
   lastName: {
     type: String,
     required: false,
@@ -42,10 +48,22 @@ const userSchema = new Schema({
       ref: 'sections'
     }
   ],
-  logs: [
+  groups: [
     {
       type: Schema.Types.ObjectId,
-      ref: 'logs'
+      ref: 'groups'
+    }
+  ],
+  categoriesGroups: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'categoriesGroups'
+    }
+  ],
+  categories: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'categories'
     }
   ]
 })

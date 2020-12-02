@@ -33,25 +33,22 @@ export const actions = {
       const { token } = await this.$axios.$post('/api/auth/login', formData)
       dispatch('setToken', token)
       commit('setUser', storeUser(token))
-      dispatch('fetchUserData', state.user.id)
+      // dispatch('fetchUserData', storeUser(token).id)
     } catch (err) {
-      dispatch('setAlert', err.response.data.message, { root: true })
+      commit('setAlert', err.response.data.message, { root: true })
       throw err
     }
   },
   async createUser ({ dispatch, commit, state }, formData) {
     try {
       const response = await this.$axios.$post('/api/auth/create', formData)
-      dispatch('setAlert', response.message, { root: true })
+      commit('setAlert', response.message, { root: true })
       return response
     } catch (err) {
-      dispatch('chgBuzyEmail', err.response.data.email, { root: true })
-      dispatch('setAlert', err.response.data.message, { root: true })
+      commit('chgBuzyEmail', err.response.data.email, { root: true })
+      commit('setAlert', err.response.data.message, { root: true })
       throw err
     }
-  },
-  setUser ({ commit, user }) {
-    commit('setUser', user)
   },
   setToken ({ commit }, token) {
     this.$axios.setToken(token, 'Bearer')
@@ -78,19 +75,16 @@ export const actions = {
       dispatch('logout')
     }
   },
-  async fetchUserData ({ dispatch, commit }, userId) {
+  async fetchUserData ({ commit, dispatch }, userId) {
     try {
       const data = await this.$axios.$get(`/api/auth/fetchUserData/${userId}`)
-      // sections
-      const sections = data.sections.map((item, index) => {
-        item.order = index + 1
-        return item
-      })
-      commit('user/properties/sections/chgSectionsState', sections, { root: true })
-      // logs
       commit('logs/logs/chgLogsState', data.logs, { root: true })
+      commit('user/properties/sections/chgSections', orderItems(data.sections), { root: true })
+      commit('user/properties/groups/chgGroups', orderItems(data.groups), { root: true })
+      commit('user/properties/categories/chgCategories', orderItems(data.categories), { root: true })
+      commit('user/properties/categories/chgCategoriesGroups', orderItems(data.categoriesGroups), { root: true })
     } catch (err) {
-      dispatch('setAlert', err.response.data.message, { root: true })
+      commit('setAlert', err.response.data.message, { root: true })
       throw err
     }
   },
@@ -126,4 +120,10 @@ function storeUser (token) {
     name: decodedToken.name,
     role: decodedToken.role
   }
+}
+function orderItems (items) {
+  return items.map((item, index) => {
+    item.order = index + 1
+    return item
+  })
 }
