@@ -1,53 +1,68 @@
 <template>
-  <v-app>
+  <v-app class="allScreen" style="user-select: none;">
     <div>
+      <historyModal />
+      <logsModal />
+      <categiriesGroupsIcons />
       <SnackBar />
       <Navbar />
       <Drawer />
     </div>
-    <v-main class="mx-2 my-2">
-      <div class="d-flex flex-grow-1 justify-space-between">
-        <div v-if="barsVisibility" class="justify-start">
-          <LeftBar />
-        </div>
-        <div style="width: 100%" class="mx-3">
-          <div v-if="barsVisibility">
-            <Navigation />
-          </div>
-          <div class="mt-2">
-            <nuxt />
-          </div>
-        </div>
-        <div v-if="barsVisibility" class="d-flex justify-end">
-          <RightBar />
-        </div>
-      </div>
-    </v-main>
-    {{ barsVisibility }}
-    <v-footer app />
+    <div class="mt-2">
+      <nuxt />
+    </div>
+    <!--    <v-footer padless>-->
+    <!--      <v-col-->
+    <!--        class="text-center"-->
+    <!--        cols="12"-->
+    <!--      >-->
+    <!--        {{ new Date().getFullYear() }} — <strong>Vuetify</strong>-->
+    <!--      </v-col>-->
+    <!--    </v-footer>-->
   </v-app>
 </template>
 
 <script>
 import isAuthed from '@/middleware/isAuthed'
+import resetStore from '@/mixins/reset-store'
+import getters from '@/mixins/getters'
+
 export default {
-  middleware: [isAuthed],
   name: 'User',
+  middleware: [isAuthed],
   components: {
-    SnackBar: () => import('@/components/layoutsComponents/SnackBar'),
+    SnackBar: () => import('@/components/infoPanel/SnackBar'),
+    historyModal: () => import('@/components/infoPanel/historyModal'),
+    categiriesGroupsIcons: () => import('@/components/user/properties/categories/iconsModal'),
+    logsModal: () => import('@/components/infoPanel/logs'),
     Navbar: () => import('@/components/layoutsComponents/user/Navbar'),
     Drawer: () => import('@/components/layoutsComponents/user/Drawer'),
-    LeftBar: () => import('@/components/layoutsComponents/user/LeftBar'),
-    RightBar: () => import('@/components/layoutsComponents/user/RightBar'),
-    Navigation: () => import('@/components/layoutsComponents/user/Navigation')
   },
+  mixins: [getters, resetStore],
   computed: {
     barsVisibility () {
-      return Boolean(this.$route.path !== '/main')
+      return Boolean(this.route !== '/main')
+    },
+    tabModeContent () {
+      return this.gTabMode.content
     }
+  },
+  watch: {
+    tabModeContent () {
+      this.resetUtils()
+      if (this.tabModeContent === 'default') {
+        this.resetFields()
+        this.resetEditMode()
+        this.resetUtils()
+        this.resetButtons()
+      }
+    },
+  },
+  created () {
+    this.$store.dispatch('auth/fetchUserData', this.gUser.id)
   }
 }
 </script>
 
-<style>
+<style scoped>
 </style>

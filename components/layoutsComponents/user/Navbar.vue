@@ -75,18 +75,24 @@
       <v-btn
         text
         class="ma-2"
-        to="/main"
+        to="/properties"
       >
-        Main
+        Настройки
       </v-btn>
       <v-btn
         text
         class="ma-2"
-        @click="snackBar('testButton')"
+        @click="openModal('history')"
       >
-        testSnackBar
+        Журнал
       </v-btn>
-
+      <v-btn
+        text
+        class="ma-2"
+        @click="openModal('logs')"
+      >
+        Логи
+      </v-btn>
       <v-spacer />
       <v-menu offset-y>
         <template v-slot:activator="{ on }">
@@ -183,8 +189,8 @@ export default {
     }
   },
   methods: {
-    snackBar (val) {
-      this.$store.dispatch('snackBar/changeSnackBar', val)
+    openModal (val) {
+      this.$store.commit('setModal', val)
     },
     profile () {
 

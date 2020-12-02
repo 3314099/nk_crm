@@ -1,5 +1,8 @@
 export const state = () => ({
-  error: null,
+  alertMessage: '',
+  alertsList: [],
+  modal: '',
+  error: '',
   response: null,
   message: null,
   buzyEmail: null,
@@ -7,6 +10,12 @@ export const state = () => ({
 })
 
 export const mutations = {
+  setAlert (state, payload) {
+    state.alertMessage = payload
+  },
+  setModal (state, payload) {
+    state.modal = payload
+  },
   setError (state, payload) {
     state.error = payload
   },
@@ -28,26 +37,13 @@ export const mutations = {
 export const actions = {
   nuxtServerInit ({ dispatch }) {
     dispatch('auth/autoLogin')
-  },
-  setError ({ commit }, payload) {
-    commit('setError', payload)
-  },
-  setResponse ({ commit }, payload) {
-    commit('setResponse', payload)
-  },
-  chgBuzyEmail ({ commit }, payload) {
-    commit('chgBuzyEmail', payload)
-  },
-  chgMessage ({ commit }, payload) {
-    commit('chgMessage', payload)
-  },
-  clearResponse ({ commit }) {
-    commit('clearResponse')
   }
 }
 
 export const getters = {
   error: state => state.error,
+  alertMessage: state => state.alertMessage,
+  modal: state => state.modal,
   response: state => state.response,
   buzyEmail: state => state.buzyEmail,
   message: state => state.message,

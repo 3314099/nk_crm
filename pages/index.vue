@@ -307,7 +307,7 @@
       <v-container>
         <v-layout column align-center justify-center>
           <v-flex xs12 class="text-xs-center">
-            <img height="200px" :src="imageLink.logo">
+            <img height="200px" :src="imageLink.logo" alt="image link">
           </v-flex>
         </v-layout>
       </v-container>
@@ -336,7 +336,7 @@ export default {
   middleware: [isGuest],
   name: 'Landing',
   components: {
-    SnackBar: () => import('@/components/layoutsComponents/SnackBar'),
+    SnackBar: () => import('@/components/infoPanel/SnackBar'),
     login: () => import('@/components//auth/login'),
     registration: () => import('@/components/auth/AuthRegistration'),
     forgotPassword: () => import('@/components/auth/forgotPassword')
@@ -386,7 +386,7 @@ export default {
   },
   methods: {
     chgVuexMode (val) {
-      this.$store.dispatch('mode/chgEditMode', { mode: val, item: {} })
+      this.$store.commit('mode/chgEditMode', { mode: val, item: {} })
     },
     chgComponent () {
       const editMode = this.$store.getters['mode/editMode']
@@ -406,7 +406,7 @@ export default {
       this.subscribed = !this.subscribed
     },
     snackBar (val) {
-      this.$store.dispatch('snackBar/changeSnackBar', val)
+      this.$store.commit('snackBar/changeSnackBar', val)
     }
   },
   head: {

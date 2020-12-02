@@ -208,22 +208,7 @@ export default {
       { text: 'Редактировать', value: 'actions', sortable: false },
       { text: 'Дата регистрации', value: 'date' }
     ],
-    desserts: [],
     editedIndex: -1,
-    editedItem: {
-      name: '',
-      calories: 0,
-      fat: 0,
-      carbs: 0,
-      protein: 0
-    },
-    defaultItem: {
-      name: '',
-      calories: 0,
-      fat: 0,
-      carbs: 0,
-      protein: 0
-    }
   }),
   computed: {
     startDate () {
@@ -308,15 +293,6 @@ export default {
     chgUserNote (val) {
       this.$emit('chgUserNote', val)
     },
-    // async openNotes (id) {
-    //   console.log(id)
-    //   try {
-    //     const response = await this.$store.dispatch('admin/users/fetchUserById', id)
-    //     this.$store.dispatch('mode/chgEditMode', { val: 'openNotes', item: response })
-    //   } catch {
-    //     // this.$store.dispatch('snackBar/changeSnackBar', 'newUser')
-    //   }
-    // },
     resetFilters () {
       this.search = ''
       this.setDate()
@@ -329,10 +305,10 @@ export default {
       } else {
         newItem.role = 'admin'
       }
-      this.$store.dispatch('admin/users/updateUser', newItem)
+      this.$store.commit('admin/users/updateUser', newItem)
     },
     chgUser (item) {
-      this.$store.dispatch('mode/chgEditMode', { mode: 'editUser', item })
+      this.$store.commit('mode/chgEditMode', { mode: 'editUser', item })
     },
     initialize () {
     },

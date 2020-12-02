@@ -1,29 +1,41 @@
 <template>
-  <v-btn-toggle>
-    <v-btn
-      v-for="(button, i) in buttons"
-      :key="i"
-      fab
-      :to="button.link"
-    >
-      <v-icon>{{ button.icon }}</v-icon>
-    </v-btn>
-    <v-btn
-      fab
-      @click="chgVisibility ()"
-    >
-      <v-icon
-        v-if="visibility"
+  <v-card
+    max-width="400"
+    class="mx-auto mb-2"
+    elevation="3"
+  >
+    <v-system-bar
+      color="light-blue darken-2"
+      dark
+      height="8px"
+    />
+    <v-btn-toggle>
+      <v-btn
+        v-for="(button, i) in buttons"
+        :key="i"
+        fab
+        :to="button.link"
+        width="50px"
       >
-        mdi-eye-off
-      </v-icon>
-      <v-icon
-        v-if="!visibility"
+        <v-icon>{{ button.icon }}</v-icon>
+      </v-btn>
+      <v-btn
+        fab
+        @click="chgVisibility ()"
       >
-        mdi-eye-settings-outline
-      </v-icon>
-    </v-btn>
-  </v-btn-toggle>
+        <v-icon
+          v-if="visibility"
+        >
+          mdi-eye-off
+        </v-icon>
+        <v-icon
+          v-if="!visibility"
+        >
+          mdi-eye-settings-outline
+        </v-icon>
+      </v-btn>
+    </v-btn-toggle>
+  </v-card>
 </template>
 <script>
 export default {

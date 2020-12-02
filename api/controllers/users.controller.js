@@ -1,9 +1,5 @@
 const bcrypt = require('bcrypt')
 const saltRounds = 8
-// const myPlaintextPassword = 's0/\/\P4$$w0rD'
-// const someOtherPlaintextPassword = 'not_bacon'
-// const jwt = require('jsonwebtoken')
-// const keys = require('../keys')
 const User = require('../models/user.model')
 const Note = require('../models/note.model')
 
@@ -48,7 +44,7 @@ module.exports.update = async (req, res) => {
     const user = await User.findOneAndUpdate({
       _id: req.params.id
     }, { $set }, { overwrite: true })
-    res.json({ message: 'userUdated', user })
+    res.json({ message: 'userUpdated', user })
   } catch (e) {
     res.status(409).json({ message: 'failedUserUpdate' })
   }
@@ -66,11 +62,6 @@ module.exports.removeUser = async (req, res) => {
 
 module.exports.createNote = async (req, res) => {
   try {
-    // const note = new Note({
-    //   userId: req.body.userId,
-    //   text: req.body.text,
-    //   // creatorId: req.body.creatorId,
-    // })
     const { adminId, recipientId, text } = req.body
     const note = new Note({ adminId, recipientId, text })
     await note.save()
@@ -107,63 +98,5 @@ module.exports.getAllUsersNotes = async (req, res) => {
     // // -----------------------------
   } catch (e) {
     res.status(500).json({ message: 'getAllUsersNotes' })
-  }
-}
-// module.exports.create = async (req, res) => {
-//   const post = new Post({
-//     title: req.body.title,
-//     text: req.body.text,
-//     imageUrl: `/${req.file.filename}`
-//   })
-//
-//   try {
-//     await post.save()
-//     res.status(201).json(post)
-//   } catch (e) {
-//     res.status(500).json(e)
-//   }
-// }
-
-module.exports.remove = async (req, res) => {
-  try {
-    await Post.deleteOne({ _id: req.params.id })
-    res.json({ message: 'Пост удален' })
-  } catch (e) {
-    res.status(500).json(e)
-  }
-}
-
-module.exports.addView = async (req, res) => {
-  const $set = {
-    views: ++req.body.views
-  }
-  try {
-    await Post.findOneAndUpdate({ _id: req.params.id }, { $set })
-    res.status(204).json()
-  } catch (e) {
-    res.status(500).json(e)
-  }
-}
-
-module.exports.getAnalytics = async (req, res) => {
-  try {
-    const posts = await Post.find()
-
-    const labels = posts.map(post => post.title)
-
-    const json = {
-      comments: {
-        labels,
-        data: posts.map(post => post.comments.length)
-      },
-      views: {
-        labels,
-        data: posts.map(post => post.views)
-      }
-    }
-
-    res.json(json)
-  } catch (e) {
-    res.status(500).json(e)
   }
 }

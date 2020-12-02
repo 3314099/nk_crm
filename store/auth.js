@@ -5,7 +5,7 @@ import jwtDecode from 'jwt-decode'
 export const state = () => ({
   token: null,
   emailIsFree: true,
-  user: null
+  user: {}
 })
 
 export const mutations = {
@@ -28,30 +28,27 @@ export const mutations = {
 }
 
 export const actions = {
-  async login ({ commit, dispatch }, formData) {
+  async login ({ commit, dispatch, state }, formData) {
     try {
       const { token } = await this.$axios.$post('/api/auth/login', formData)
       dispatch('setToken', token)
       commit('setUser', storeUser(token))
+      // dispatch('fetchUserData', storeUser(token).id)
     } catch (err) {
-      commit('setError', err, { root: true })
+      commit('setAlert', err.response.data.message, { root: true })
       throw err
     }
   },
-  async createUser ({ commit, state }, formData) {
+  async createUser ({ dispatch, commit, state }, formData) {
     try {
       const response = await this.$axios.$post('/api/auth/create', formData)
-      commit('setResponse', response, { root: true })
+      commit('setAlert', response.message, { root: true })
       return response
     } catch (err) {
-      commit('setError', err, { root: true })
+      commit('chgBuzyEmail', err.response.data.email, { root: true })
+      commit('setAlert', err.response.data.message, { root: true })
       throw err
     }
-  },
-  setAdminRoles () {
-  },
-  setUser ({ commit, user }) {
-    commit('setUser', user)
   },
   setToken ({ commit }, token) {
     this.$axios.setToken(token, 'Bearer')
@@ -78,6 +75,19 @@ export const actions = {
       dispatch('logout')
     }
   },
+  async fetchUserData ({ commit, dispatch }, userId) {
+    try {
+      const data = await this.$axios.$get(`/api/auth/fetchUserData/${userId}`)
+      commit('logs/logs/chgLogsState', data.logs, { root: true })
+      commit('user/properties/sections/chgSections', orderItems(data.sections), { root: true })
+      commit('user/properties/groups/chgGroups', orderItems(data.groups), { root: true })
+      commit('user/properties/categories/chgCategories', orderItems(data.categories), { root: true })
+      commit('user/properties/categories/chgCategoriesGroups', orderItems(data.categoriesGroups), { root: true })
+    } catch (err) {
+      commit('setAlert', err.response.data.message, { root: true })
+      throw err
+    }
+  },
 }
 
 export const getters = {
@@ -98,18 +108,22 @@ function isJWTValid (token) {
 }
 
 function decodeToken (token) {
-  const decodedToken = jwtDecode(token) || {}
-  return decodedToken
+  return jwtDecode(token) || {}
 }
 
 function storeUser (token) {
   const decodedToken = decodeToken(token)
-  const newUser = {
+  return {
     id: decodedToken._id,
     lastName: decodedToken.lastName,
     email: decodedToken.email,
     name: decodedToken.name,
     role: decodedToken.role
   }
-  return newUser
+}
+function orderItems (items) {
+  return items.map((item, index) => {
+    item.order = index + 1
+    return item
+  })
 }
