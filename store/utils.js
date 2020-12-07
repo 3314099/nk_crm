@@ -36,6 +36,7 @@ export const mutations = {
   },
   resetFields (state) {
     state.searchField = ''
+    state.secondSearchField = ''
     state.commentField = ''
   },
   resetV (state, payload) {

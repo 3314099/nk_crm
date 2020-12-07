@@ -92,7 +92,7 @@ module.exports.fetchUserData = async (req, res) => {
   try {
     const user = await User.findById(req.params.id)
       .populate([
-        'logs', 'sections', 'groups', 'categoriesGroups', 'categories'
+        'logslist', 'sections', 'groups', 'categoriesGroups', 'categories'
       ])
     res.json(user)
   } catch (e) {

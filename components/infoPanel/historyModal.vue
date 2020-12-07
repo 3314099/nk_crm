@@ -255,7 +255,7 @@ export default {
   computed: {
     historyModal: {
       get () {
-        return this.$store.getters.modal === 'history'
+        return this.$store.getters.modal === 'historyModal'
       },
       set () {
         this.$store.commit('setModal', '')

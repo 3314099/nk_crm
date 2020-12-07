@@ -11,10 +11,17 @@ export default {
         },
         {
           message: 'failedCreateLog',
-          alertType: 'none',
+          alertType: 'errorPanel',
           color: 'error',
           log: true,
           text: 'api/controllers/logs/logs.controller.js - create'
+        },
+        {
+          message: 'failedMXtoCreateLog',
+          alertType: 'errorPanel',
+          color: 'error',
+          log: true,
+          text: 'mixins/logList/logList.mixin.js - MXtoCreateLog'
         },
         {
           message: 'logout',
@@ -337,7 +344,7 @@ export default {
           color: 'error',
           log: true,
           text: 'api/controllers/user/properties/categories.controller.js - chgOrderCategories'
-        },
+        }
       ]
     }
   }

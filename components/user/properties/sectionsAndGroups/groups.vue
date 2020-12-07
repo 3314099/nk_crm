@@ -171,7 +171,7 @@ export default {
         return newArr
       },
       set (v) {
-        this.$store.dispatch('user/properties/groups/chgGroups', v)
+        this.$store.commit('user/properties/groups/chgGroups', v)
         this.MXchgOrderGroups(v)
       }
     },
@@ -203,10 +203,10 @@ export default {
       this.groups = this.groups.sort((a, b) => a.order - b.order);
     },
     editGroup (group) {
-      this.$store.dispatch('mode/chgTabMode', { tab: 'propertySectAndGrps', content: 'TabContentGroupsEdit' })
-      this.$store.dispatch('mode/chgEditMode', { mode: 'edit', item: group })
-      this.$store.dispatch('utils/chgSearchField', group.title)
-      this.$store.dispatch('utils/chgCommentField', group.comment)
+      this.$store.commit('mode/chgTabMode', { tab: 'propertySectAndGrps', content: 'TabContentGroupsEdit' })
+      this.$store.commit('mode/chgEditMode', { mode: 'edit', item: group })
+      this.$store.commit('utils/chgSearchField', group.title)
+      this.$store.commit('utils/chgCommentField', group.comment)
     },
     chgGroupVisible (item) {
       const newItem = Object.assign({}, item)
