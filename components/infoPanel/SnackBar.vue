@@ -27,10 +27,11 @@
 <script>
 import alertList from '@/mixins/user/alertsLists/alertList'
 import getters from '@/mixins/getters'
+import logsList from '@/mixins/logList/logList.mixin'
 
 export default {
   name: 'SnackBar',
-  mixins: [alertList, getters],
+  mixins: [alertList, getters, logsList],
   data () {
     return {
       color: '',
@@ -65,7 +66,8 @@ export default {
       const alertMessage = this.alertList.find(item => item.message === message)
       if (alertMessage.log) {
         alertMessage.userId = this.gUser.id
-        this.$store.dispatch('logs/logs/createLog', alertMessage)
+        this.MXtoCreateLog(alertMessage)
+        // this.$store.dispatch('logsList/logsList/createLog', alertMessage)
       }
       if (alertMessage.alertType === 'snackbar') {
         this.text = alertMessage.text // текст сообщения

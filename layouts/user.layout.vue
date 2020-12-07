@@ -34,7 +34,7 @@ export default {
     SnackBar: () => import('@/components/infoPanel/SnackBar'),
     historyModal: () => import('@/components/infoPanel/historyModal'),
     categiriesGroupsIcons: () => import('@/components/user/properties/categories/iconsModal'),
-    logsModal: () => import('@/components/infoPanel/logs'),
+    logsModal: () => import('@/components/infoPanel/logsModal'),
     Navbar: () => import('@/components/layoutsComponents/user/Navbar'),
     Drawer: () => import('@/components/layoutsComponents/user/Drawer'),
   },

@@ -78,7 +78,7 @@ export const actions = {
   async fetchUserData ({ commit, dispatch }, userId) {
     try {
       const data = await this.$axios.$get(`/api/auth/fetchUserData/${userId}`)
-      commit('logs/logs/chgLogsState', data.logs, { root: true })
+      commit('logsList/logsList/chgLogsList', data.logslist, { root: true })
       commit('user/properties/sections/chgSections', orderItems(data.sections), { root: true })
       commit('user/properties/groups/chgGroups', orderItems(data.groups), { root: true })
       commit('user/properties/categories/chgCategories', orderItems(data.categories), { root: true })

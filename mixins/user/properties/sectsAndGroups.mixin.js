@@ -24,11 +24,13 @@ export default {
       try {
         await this.$store.dispatch('user/properties/sections/editSection', data)
         this.$store.commit('mode/chgTabMode', { tab: 'propertySectAndGrps', content: 'default' })
+        this.$store.commit('utils/chgLoading', false)
       } catch (e) {
         this.$store.commit('utils/chgLoading', false)
       }
     },
     async MXtoRemoveSection (data) {
+      this.$store.commit('utils/chgLoading', true)
       try {
         await this.$store.dispatch('user/properties/sections/removeSection', data)
         this.$store.commit('mode/chgTabMode', { tab: 'propertySectAndGrps', content: 'default' })
@@ -63,6 +65,7 @@ export default {
       try {
         await this.$store.dispatch('user/properties/groups/editGroup', data)
         this.$store.commit('mode/chgTabMode', { tab: 'propertySectAndGrps', content: 'default' })
+        this.$store.commit('utils/chgLoading', false)
       } catch (e) {
         this.$store.commit('utils/chgLoading', false)
       }

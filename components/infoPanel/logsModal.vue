@@ -1,7 +1,7 @@
 <template>
   <v-row justify="center">
     <v-dialog
-      v-model="historyModal"
+      v-model="modal"
       scrollable
       width="80vw"
     >
@@ -21,7 +21,7 @@
           height="60vh"
           fixed-header
           :headers="headers"
-          :items="logs"
+          :items="logsList"
           :page.sync="page"
           :items-per-page="itemsPerPage"
           :search="search"
@@ -256,21 +256,21 @@ export default {
     }
   },
   computed: {
-    historyModal: {
+    modal: {
       get () {
-        return this.$store.getters.modal === 'logs'
+        return this.$store.getters.modal === 'logsModal'
       },
       set () {
-        this.$store.dispatch('setModal', '')
+        this.$store.commit('setModal', '')
       }
     },
-    logs () {
-      return this.$store.getters['logs/logs/logs']
+    logsList () {
+      return this.$store.getters['logsList/logsList/logsList']
     }
   },
   methods: {
     close () {
-      this.$store.dispatch('setModal', '')
+      this.$store.commit('setModal', '')
     }
   }
 }

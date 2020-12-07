@@ -82,14 +82,14 @@
       <v-btn
         text
         class="ma-2"
-        @click="openModal('history')"
+        @click="openModal('historyModal')"
       >
         Журнал
       </v-btn>
       <v-btn
         text
         class="ma-2"
-        @click="openModal('logs')"
+        @click="openModal('logsModal')"
       >
         Логи
       </v-btn>
