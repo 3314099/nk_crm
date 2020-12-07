@@ -223,7 +223,6 @@ export default {
             this.$v.$touch()
             return
           }
-          this.$store.dispatch('utils/chgLoading', 'true')
           item.userId = this.gUser.id
           item.title = this.titleField
           item.comment = this.commentField
@@ -247,7 +246,6 @@ export default {
         case 'remove':
           item.groupId = this.getEditItem()._id
           item.userId = this.gUser.id
-          this.$store.commit('utils/chgLoading', 'true')
           this.MXtoRemoveGroup(item)
           break
         default: // cancel

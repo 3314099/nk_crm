@@ -2,10 +2,10 @@ const { model, Schema } = require('mongoose')
 // const mongoose = require('mongoose')
 // const Schema = mongoose.Schema
 const userSchema = new Schema({
-  logs: [
+  logslist: [
     {
       type: Schema.Types.ObjectId,
-      ref: 'logs'
+      ref: 'logslist'
     }
   ],
   lastName: {

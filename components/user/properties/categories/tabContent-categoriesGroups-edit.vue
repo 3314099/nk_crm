@@ -236,7 +236,7 @@ export default {
     toChgByEditItem () {
       const editItem = this.gEditItem
       if (editItem._id) {
-        this.$store.commit('utils/chgSearchField', editItem.title)
+        this.$store.commit('utils/chgSecondSearchField', editItem.title)
         this.$store.commit('utils/chgCommentField', editItem.comment)
         this.$store.commit('user/properties/categories/chgCategoriesGroupIcon', this.gEditItem.icon)
       }

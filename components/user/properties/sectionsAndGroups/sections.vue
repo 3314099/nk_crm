@@ -153,7 +153,7 @@ export default {
         return newArr
       },
       set (v) {
-        this.$store.dispatch('user/properties/sections/chgSections', v)
+        this.$store.commit('user/properties/sections/chgSections', v)
         this.MXchgOrderSections(v)
       }
     },
@@ -181,15 +181,15 @@ export default {
         this.dirtySearchField = false
       }
     },
-    sort () {
-      this.sections = this.sections.sort((a, b) => a.order - b.order);
-    },
+    // sort () {
+    //   this.sections = this.sections.sort((a, b) => a.order - b.order);
+    // },
     editSection (section) {
-      this.$store.dispatch('mode/chgTabMode', { tab: 'propertySectAndGrps', content: 'TabContentSectsEdit' })
-      this.$store.dispatch('mode/chgEditMode', { mode: 'edit', item: section })
-      this.$store.dispatch('utils/chgSearchField', section.title)
-      this.$store.dispatch('utils/chgCommentField', section.comment)
-      this.$store.dispatch('utils/chgColorPicker', section.color)
+      this.$store.commit('mode/chgTabMode', { tab: 'propertySectAndGrps', content: 'TabContentSectsEdit' })
+      this.$store.commit('mode/chgEditMode', { mode: 'edit', item: section })
+      this.$store.commit('utils/chgSearchField', section.title)
+      this.$store.commit('utils/chgCommentField', section.comment)
+      this.$store.commit('utils/chgColorPicker', section.color)
     },
     chgSectionVisible (item) {
       const newItem = Object.assign({}, item)
