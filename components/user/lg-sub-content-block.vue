@@ -1,5 +1,7 @@
 <template>
-  <component :is="component" />
+  <transition name="bounce" mode="out-in">
+    <component :is="component" />
+  </transition>
 </template>
 
 <script>
@@ -54,6 +56,13 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style>
+  @keyframes bounce-in {
+    0% {
+      transform: scale(0);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
 </style>

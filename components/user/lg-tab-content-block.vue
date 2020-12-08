@@ -1,20 +1,10 @@
 <template>
   <div class="my-2" style="height:115px">
-    <v-tabs-items v-model="tabContent">
-      <v-tab-item
-        v-for="item in items"
-        :key="item"
-        :value="item"
-      >
-        <component :is="item" />
-      </v-tab-item>
-    </v-tabs-items>
+    <transition name="bounce" mode="out-in">
+      <component :is="tabContent" />
+    </transition>
   </div>
 </template>
-
-<!--<transition name="component-fade" mode="out-in">-->
-<!--  <component :is="tabContent" />-->
-<!--</transition>-->
 
 <script>
 export default {
@@ -114,4 +104,12 @@ export default {
 </script>
 
 <style scoped>
+  @keyframes bounce-in {
+    0% {
+      transform: scale(0);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
 </style>
